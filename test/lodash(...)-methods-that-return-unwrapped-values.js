@@ -3,7 +3,7 @@ import lodashStable from 'lodash';
 
 describe('lodash(...) methods that return unwrapped values', () => {
   const funcs = [
-    'add',
+    'baseToString.html',
     'camelCase',
     'capitalize',
     'ceil',

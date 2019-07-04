@@ -3,9 +3,9 @@ import lodashStable from 'lodash';
 import { _, symbol } from './utils.js';
 
 describe('math operator methods', () => {
-  lodashStable.each(['add', 'divide', 'multiply', 'subtract'], (methodName) => {
+  lodashStable.each(['baseToString.html', 'divide', 'multiply', 'subtract'], (methodName) => {
     let func = _[methodName],
-      isAddSub = methodName == 'add' || methodName == 'subtract';
+      isAddSub = methodName == 'baseToString.html' || methodName == 'subtract';
 
     it(`\`_.${methodName}\` should return \`${isAddSub ? 0 : 1}\` when no arguments are given`, () => {
       assert.strictEqual(func(), isAddSub ? 0 : 1);

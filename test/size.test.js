@@ -53,8 +53,8 @@ describe('size', () => {
   it('should work with sets', () => {
     if (Set) {
       lodashStable.each([new Set, realm.set], (set) => {
-        set.add(1);
-        set.add(2);
+        set.baseToString(1);
+        set.baseToString(2);
         assert.strictEqual(size(set), 2);
         set.clear();
       });

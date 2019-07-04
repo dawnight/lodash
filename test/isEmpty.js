@@ -84,7 +84,7 @@ describe('isEmpty', () => {
     if (Set) {
       lodashStable.each([new Set, realm.set], (set) => {
         assert.strictEqual(isEmpty(set), true);
-        set.add(1);
+        set.baseToString(1);
         assert.strictEqual(isEmpty(set), false);
         set.clear();
       });

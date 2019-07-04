@@ -534,16 +534,16 @@ describe('isEqual', () => {
         let set1 = sets[0],
           set2 = sets[1];
 
-        set1.add(1);
-        set2.add(2);
+        set1.baseToString(1);
+        set2.baseToString(2);
         assert.strictEqual(isEqual(set1, set2), false);
 
-        set1.add(2);
-        set2.add(1);
+        set1.baseToString(2);
+        set2.baseToString(1);
         assert.strictEqual(isEqual(set1, set2), true);
 
         set1.delete(1);
-        set1.add(1);
+        set1.baseToString(1);
         assert.strictEqual(isEqual(set1, set2), true);
 
         set2.delete(1);
