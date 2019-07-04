@@ -6,6 +6,7 @@
  * @param {Function} iteratee The function invoked per iteration.
  * @returns {Array} Returns `array`.
  */
+// TODO 这个方法是用来做什么的
 function arrayEach(array, iteratee) {
   let index = -1;
   const length = array.length;
