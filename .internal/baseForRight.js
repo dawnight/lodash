@@ -9,17 +9,17 @@
  * @returns {Object} Returns `object`.
  */
 function baseForRight(object, iteratee, keysFunc) {
-  const iterable = Object(object)
-  const props = keysFunc(object)
-  let { length } = props
+  const iterable = Object(object);
+  const props = keysFunc(object);
+  let { length } = props;
 
   while (length--) {
-    const key = props[length]
+    const key = props[length];
     if (iteratee(iterable[key], key, iterable) === false) {
-      break
+      break;
     }
   }
-  return object
+  return object;
 }
 
-export default baseForRight
+export default baseForRight;

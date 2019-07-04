@@ -3,15 +3,15 @@ import lodashStable from 'lodash';
 import { objectProto } from './utils.js';
 import defaults from '../defaults.js';
 
-describe('defaults', function() {
-  it('should assign source properties if missing on `object`', function() {
-    var actual = defaults({ 'a': 1 }, { 'a': 2, 'b': 2 });
+describe('defaults', () => {
+  it('should assign source properties if missing on `object`', () => {
+    const actual = defaults({ 'a': 1 }, { 'a': 2, 'b': 2 });
     assert.deepStrictEqual(actual, { 'a': 1, 'b': 2 });
   });
 
-  it('should accept multiple sources', function() {
-    var expected = { 'a': 1, 'b': 2, 'c': 3 },
-        actual = defaults({ 'a': 1, 'b': 2 }, { 'b': 3 }, { 'c': 3 });
+  it('should accept multiple sources', () => {
+    let expected = { 'a': 1, 'b': 2, 'c': 3 },
+      actual = defaults({ 'a': 1, 'b': 2 }, { 'b': 3 }, { 'c': 3 });
 
     assert.deepStrictEqual(actual, expected);
 
@@ -19,25 +19,25 @@ describe('defaults', function() {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should not overwrite `null` values', function() {
-    var actual = defaults({ 'a': null }, { 'a': 1 });
+  it('should not overwrite `null` values', () => {
+    const actual = defaults({ 'a': null }, { 'a': 1 });
     assert.strictEqual(actual.a, null);
   });
 
-  it('should overwrite `undefined` values', function() {
-    var actual = defaults({ 'a': undefined }, { 'a': 1 });
+  it('should overwrite `undefined` values', () => {
+    const actual = defaults({ 'a': undefined }, { 'a': 1 });
     assert.strictEqual(actual.a, 1);
   });
 
-  it('should assign `undefined` values', function() {
-    var source = { 'a': undefined, 'b': 1 },
-        actual = defaults({}, source);
+  it('should assign `undefined` values', () => {
+    let source = { 'a': undefined, 'b': 1 },
+      actual = defaults({}, source);
 
     assert.deepStrictEqual(actual, { 'a': undefined, 'b': 1 });
   });
 
-  it('should assign properties that shadow those on `Object.prototype`', function() {
-    var object = {
+  it('should assign properties that shadow those on `Object.prototype`', () => {
+    const object = {
       'constructor': objectProto.constructor,
       'hasOwnProperty': objectProto.hasOwnProperty,
       'isPrototypeOf': objectProto.isPrototypeOf,
@@ -47,7 +47,7 @@ describe('defaults', function() {
       'valueOf': objectProto.valueOf
     };
 
-    var source = {
+    const source = {
       'constructor': 1,
       'hasOwnProperty': 2,
       'isPrototypeOf': 3,
@@ -57,7 +57,7 @@ describe('defaults', function() {
       'valueOf': 7
     };
 
-    var expected = lodashStable.clone(source);
+    let expected = lodashStable.clone(source);
     assert.deepStrictEqual(defaults({}, source), expected);
 
     expected = lodashStable.clone(object);

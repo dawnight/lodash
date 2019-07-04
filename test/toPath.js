@@ -3,43 +3,43 @@ import lodashStable from 'lodash';
 import { symbol } from './utils.js';
 import toPath from '../toPath.js';
 
-describe('toPath', function() {
-  it('should convert a string to a path', function() {
+describe('toPath', () => {
+  it('should convert a string to a path', () => {
     assert.deepStrictEqual(toPath('a.b.c'), ['a', 'b', 'c']);
     assert.deepStrictEqual(toPath('a[0].b.c'), ['a', '0', 'b', 'c']);
   });
 
-  it('should coerce array elements to strings', function() {
-    var array = ['a', 'b', 'c'];
+  it('should coerce array elements to strings', () => {
+    const array = ['a', 'b', 'c'];
 
-    lodashStable.each([array, lodashStable.map(array, Object)], function(value) {
-      var actual = toPath(value);
+    lodashStable.each([array, lodashStable.map(array, Object)], (value) => {
+      const actual = toPath(value);
       assert.deepStrictEqual(actual, array);
       assert.notStrictEqual(actual, array);
     });
   });
 
-  it('should return new path array', function() {
+  it('should return new path array', () => {
     assert.notStrictEqual(toPath('a.b.c'), toPath('a.b.c'));
   });
 
-  it('should not coerce symbols to strings', function() {
+  it('should not coerce symbols to strings', () => {
     if (Symbol) {
-      var object = Object(symbol);
-      lodashStable.each([symbol, object, [symbol], [object]], function(value) {
-        var actual = toPath(value);
+      const object = Object(symbol);
+      lodashStable.each([symbol, object, [symbol], [object]], (value) => {
+        const actual = toPath(value);
         assert.ok(lodashStable.isSymbol(actual[0]));
       });
     }
   });
 
-  it('should handle complex paths', function() {
-    var actual = toPath('a[-1.23]["[\\"b\\"]"].c[\'[\\\'d\\\']\'][\ne\n][f].g');
+  it('should handle complex paths', () => {
+    const actual = toPath('a[-1.23]["[\\"b\\"]"].c[\'[\\\'d\\\']\'][\ne\n][f].g');
     assert.deepStrictEqual(actual, ['a', '-1.23', '["b"]', 'c', "['d']", '\ne\n', 'f', 'g']);
   });
 
-  it('should handle consecutive empty brackets and dots', function() {
-    var expected = ['', 'a'];
+  it('should handle consecutive empty brackets and dots', () => {
+    let expected = ['', 'a'];
     assert.deepStrictEqual(toPath('.a'), expected);
     assert.deepStrictEqual(toPath('[].a'), expected);
 

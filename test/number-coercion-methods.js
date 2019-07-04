@@ -9,22 +9,22 @@ import {
   MAX_INTEGER,
   MAX_ARRAY_LENGTH,
   symbol,
-  falsey,
+  falsey
 } from './utils.js';
 
-describe('number coercion methods', function() {
-  lodashStable.each(['toFinite', 'toInteger', 'toNumber', 'toSafeInteger'], function(methodName) {
-    var func = _[methodName];
+describe('number coercion methods', () => {
+  lodashStable.each(['toFinite', 'toInteger', 'toNumber', 'toSafeInteger'], (methodName) => {
+    const func = _[methodName];
 
-    it('`_.' + methodName + '` should preserve the sign of `0`', function() {
-      var values = [0, '0', -0, '-0'],
-          expected = [[0, Infinity], [0, Infinity], [-0, -Infinity], [-0, -Infinity]];
+    it(`\`_.${methodName}\` should preserve the sign of \`0\``, () => {
+      let values = [0, '0', -0, '-0'],
+        expected = [[0, Infinity], [0, Infinity], [-0, -Infinity], [-0, -Infinity]];
 
-      lodashStable.times(2, function(index) {
-        var others = lodashStable.map(values, index ? Object : identity);
+      lodashStable.times(2, (index) => {
+        const others = lodashStable.map(values, index ? Object : identity);
 
-        var actual = lodashStable.map(others, function(value) {
-          var result = func(value);
+        const actual = lodashStable.map(others, (value) => {
+          const result = func(value);
           return [result, 1 / result];
         });
 
@@ -33,15 +33,15 @@ describe('number coercion methods', function() {
     });
   });
 
-  lodashStable.each(['toFinite', 'toInteger', 'toLength', 'toNumber', 'toSafeInteger'], function(methodName) {
-    var func = _[methodName],
-        isToFinite = methodName == 'toFinite',
-        isToLength = methodName == 'toLength',
-        isToNumber = methodName == 'toNumber',
-        isToSafeInteger = methodName == 'toSafeInteger';
+  lodashStable.each(['toFinite', 'toInteger', 'toLength', 'toNumber', 'toSafeInteger'], (methodName) => {
+    let func = _[methodName],
+      isToFinite = methodName == 'toFinite',
+      isToLength = methodName == 'toLength',
+      isToNumber = methodName == 'toNumber',
+      isToSafeInteger = methodName == 'toSafeInteger';
 
     function negative(string) {
-      return '-' + string;
+      return `-${string}`;
     }
 
     function pad(string) {
@@ -49,25 +49,23 @@ describe('number coercion methods', function() {
     }
 
     function positive(string) {
-      return '+' + string;
+      return `+${string}`;
     }
 
-    it('`_.' + methodName + '` should pass thru primitive number values', function() {
-      var values = [0, 1, NaN];
+    it(`\`_.${methodName}\` should pass thru primitive number values`, () => {
+      const values = [0, 1, NaN];
 
-      var expected = lodashStable.map(values, function(value) {
-        return (!isToNumber && value !== value) ? 0 : value;
-      });
+      const expected = lodashStable.map(values, (value) => (!isToNumber && value !== value) ? 0 : value);
 
-      var actual = lodashStable.map(values, func);
+      const actual = lodashStable.map(values, func);
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should convert number primitives and objects to numbers', function() {
-      var values = [2, 1.2, MAX_SAFE_INTEGER, MAX_INTEGER, Infinity, NaN];
+    it(`\`_.${methodName}\` should convert number primitives and objects to numbers`, () => {
+      const values = [2, 1.2, MAX_SAFE_INTEGER, MAX_INTEGER, Infinity, NaN];
 
-      var expected = lodashStable.map(values, function(value) {
+      const expected = lodashStable.map(values, (value) => {
         if (!isToNumber) {
           if (!isToFinite && value == 1.2) {
             value = 1;
@@ -82,29 +80,27 @@ describe('number coercion methods', function() {
             value = Math.min(value, isToLength ? MAX_ARRAY_LENGTH : MAX_SAFE_INTEGER);
           }
         }
-        var neg = isToLength ? 0 : -value;
+        const neg = isToLength ? 0 : -value;
         return [value, value, neg, neg];
       });
 
-      var actual = lodashStable.map(values, function(value) {
-        return [func(value), func(Object(value)), func(-value), func(Object(-value))];
-      });
+      const actual = lodashStable.map(values, (value) => [func(value), func(Object(value)), func(-value), func(Object(-value))]);
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should convert string primitives and objects to numbers', function() {
-      var transforms = [identity, pad, positive, negative];
+    it(`\`_.${methodName}\` should convert string primitives and objects to numbers`, () => {
+      const transforms = [identity, pad, positive, negative];
 
-      var values = [
-        '10', '1.234567890', (MAX_SAFE_INTEGER + ''),
+      const values = [
+        '10', '1.234567890', (`${MAX_SAFE_INTEGER}`),
         '1e+308', '1e308', '1E+308', '1E308',
         '5e-324', '5E-324',
         'Infinity', 'NaN'
       ];
 
-      var expected = lodashStable.map(values, function(value) {
-        var n = +value;
+      const expected = lodashStable.map(values, (value) => {
+        let n = +value;
         if (!isToNumber) {
           if (!isToFinite && n == 1.234567890) {
             n = 1;
@@ -119,85 +115,67 @@ describe('number coercion methods', function() {
             n = Math.min(n, isToLength ? MAX_ARRAY_LENGTH : MAX_SAFE_INTEGER);
           }
         }
-        var neg = isToLength ? 0 : -n;
+        const neg = isToLength ? 0 : -n;
         return [n, n, n, n, n, n, neg, neg];
       });
 
-      var actual = lodashStable.map(values, function(value) {
-        return lodashStable.flatMap(transforms, function(mod) {
-          return [func(mod(value)), func(Object(mod(value)))];
-        });
+      const actual = lodashStable.map(values, (value) => lodashStable.flatMap(transforms, (mod) => [func(mod(value)), func(Object(mod(value)))]));
+
+      assert.deepStrictEqual(actual, expected);
+    });
+
+    it(`\`_.${methodName}\` should convert binary/octal strings to numbers`, () => {
+      let numbers = [42, 5349, 1715004],
+        transforms = [identity, pad],
+        values = ['0b101010', '0o12345', '0x1a2b3c'];
+
+      const expected = lodashStable.map(numbers, (n) => lodashStable.times(8, lodashStable.constant(n)));
+
+      const actual = lodashStable.map(values, (value) => {
+        const upper = value.toUpperCase();
+        return lodashStable.flatMap(transforms, (mod) => [func(mod(value)), func(Object(mod(value))), func(mod(upper)), func(Object(mod(upper)))]);
       });
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should convert binary/octal strings to numbers', function() {
-      var numbers = [42, 5349, 1715004],
-          transforms = [identity, pad],
-          values = ['0b101010', '0o12345', '0x1a2b3c'];
+    it(`\`_.${methodName}\` should convert invalid binary/octal strings to \`${isToNumber ? 'NaN' : '0'}\``, () => {
+      let transforms = [identity, pad, positive, negative],
+        values = ['0b', '0o', '0x', '0b1010102', '0o123458', '0x1a2b3x'];
 
-      var expected = lodashStable.map(numbers, function(n) {
-        return lodashStable.times(8, lodashStable.constant(n));
-      });
+      const expected = lodashStable.map(values, (n) => lodashStable.times(8, lodashStable.constant(isToNumber ? NaN : 0)));
 
-      var actual = lodashStable.map(values, function(value) {
-        var upper = value.toUpperCase();
-        return lodashStable.flatMap(transforms, function(mod) {
-          return [func(mod(value)), func(Object(mod(value))), func(mod(upper)), func(Object(mod(upper)))];
-        });
-      });
+      const actual = lodashStable.map(values, (value) => lodashStable.flatMap(transforms, (mod) => [func(mod(value)), func(Object(mod(value)))]));
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should convert invalid binary/octal strings to `' + (isToNumber ? 'NaN' : '0') + '`', function() {
-      var transforms = [identity, pad, positive, negative],
-          values = ['0b', '0o', '0x', '0b1010102', '0o123458', '0x1a2b3x'];
-
-      var expected = lodashStable.map(values, function(n) {
-        return lodashStable.times(8, lodashStable.constant(isToNumber ? NaN : 0));
-      });
-
-      var actual = lodashStable.map(values, function(value) {
-        return lodashStable.flatMap(transforms, function(mod) {
-          return [func(mod(value)), func(Object(mod(value)))];
-        });
-      });
-
-      assert.deepStrictEqual(actual, expected);
-    });
-
-    it('`_.' + methodName + '` should convert symbols to `' + (isToNumber ? 'NaN' : '0') + '`', function() {
+    it(`\`_.${methodName}\` should convert symbols to \`${isToNumber ? 'NaN' : '0'}\``, () => {
       if (Symbol) {
-        var object1 = Object(symbol),
-            object2 = Object(symbol),
-            values = [symbol, object1, object2],
-            expected = lodashStable.map(values, lodashStable.constant(isToNumber ? NaN : 0));
+        let object1 = Object(symbol),
+          object2 = Object(symbol),
+          values = [symbol, object1, object2],
+          expected = lodashStable.map(values, lodashStable.constant(isToNumber ? NaN : 0));
 
         object2.valueOf = undefined;
-        var actual = lodashStable.map(values, func);
+        const actual = lodashStable.map(values, func);
 
         assert.deepStrictEqual(actual, expected);
       }
     });
 
-    it('`_.' + methodName + '` should convert empty values to `0` or `NaN`', function() {
-      var values = falsey.concat(whitespace);
+    it(`\`_.${methodName}\` should convert empty values to \`0\` or \`NaN\``, () => {
+      const values = falsey.concat(whitespace);
 
-      var expected = lodashStable.map(values, function(value) {
-        return (isToNumber && value !== whitespace) ? Number(value) : 0;
-      });
+      const expected = lodashStable.map(values, (value) => (isToNumber && value !== whitespace) ? Number(value) : 0);
 
-      var actual = lodashStable.map(values, function(value, index) {
-        return index ? func(value) : func();
-      });
+      const actual = lodashStable.map(values, (value, index) => index ? func(value) : func());
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should coerce objects to numbers', function() {
-      var values = [
+    it(`\`_.${methodName}\` should coerce objects to numbers`, () => {
+      const values = [
         {},
         [],
         [1],
@@ -214,7 +192,7 @@ describe('number coercion methods', function() {
         { 'toString': lodashStable.constant('0b101010') }
       ];
 
-      var expected = [
+      let expected = [
         NaN,  0,   1,   NaN,
         NaN,  2.2, 1.1, 1.1,
         NaN,  NaN,
@@ -240,7 +218,7 @@ describe('number coercion methods', function() {
           42,   42
         ];
       }
-      var actual = lodashStable.map(values, func);
+      const actual = lodashStable.map(values, func);
 
       assert.deepStrictEqual(actual, expected);
     });

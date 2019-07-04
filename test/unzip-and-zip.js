@@ -2,12 +2,12 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _, falsey, stubArray } from './utils.js';
 
-describe('unzip and zip', function() {
-  lodashStable.each(['unzip', 'zip'], function(methodName, index) {
-    var func = _[methodName];
+describe('unzip and zip', () => {
+  lodashStable.each(['unzip', 'zip'], (methodName, index) => {
+    let func = _[methodName];
     func = lodashStable.bind(index ? func.apply : func.call, func, null);
 
-    var object = {
+    const object = {
       'an empty array': [
         [],
         []
@@ -26,21 +26,21 @@ describe('unzip and zip', function() {
       ]
     };
 
-    lodashStable.forOwn(object, function(pair, key) {
-      it('`_.' + methodName + '` should work with ' + key, function() {
-        var actual = func(pair[0]);
+    lodashStable.forOwn(object, (pair, key) => {
+      it(`\`_.${methodName}\` should work with ${key}`, () => {
+        const actual = func(pair[0]);
         assert.deepStrictEqual(actual, pair[1]);
         assert.deepStrictEqual(func(actual), actual.length ? pair[0] : []);
       });
     });
 
-    it('`_.' + methodName + '` should work with tuples of different lengths', function() {
-      var pair = [
+    it(`\`_.${methodName}\` should work with tuples of different lengths`, () => {
+      const pair = [
         [['barney', 36], ['fred', 40, false]],
         [['barney', 'fred'], [36, 40], [undefined, false]]
       ];
 
-      var actual = func(pair[0]);
+      let actual = func(pair[0]);
       assert.ok('0' in actual[2]);
       assert.deepStrictEqual(actual, pair[1]);
 
@@ -49,23 +49,21 @@ describe('unzip and zip', function() {
       assert.deepStrictEqual(actual, [['barney', 36, undefined], ['fred', 40, false]]);
     });
 
-    it('`_.' + methodName + '` should treat falsey values as empty arrays', function() {
-      var expected = lodashStable.map(falsey, stubArray);
+    it(`\`_.${methodName}\` should treat falsey values as empty arrays`, () => {
+      const expected = lodashStable.map(falsey, stubArray);
 
-      var actual = lodashStable.map(falsey, function(value) {
-        return func([value, value, value]);
-      });
+      const actual = lodashStable.map(falsey, (value) => func([value, value, value]));
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should ignore values that are not arrays or `arguments` objects', function() {
-      var array = [[1, 2], [3, 4], null, undefined, { '0': 1 }];
+    it(`\`_.${methodName}\` should ignore values that are not arrays or \`arguments\` objects`, () => {
+      const array = [[1, 2], [3, 4], null, undefined, { '0': 1 }];
       assert.deepStrictEqual(func(array), [[1, 3], [2, 4]]);
     });
 
-    it('`_.' + methodName + '` should support consuming its return value', function() {
-      var expected = [['barney', 'fred'], [36, 40]];
+    it(`\`_.${methodName}\` should support consuming its return value`, () => {
+      const expected = [['barney', 'fred'], [36, 40]];
       assert.deepStrictEqual(func(func(func(func(expected)))), expected);
     });
   });

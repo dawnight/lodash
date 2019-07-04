@@ -10,38 +10,38 @@ import {
   lodashBizarro,
   LARGE_ARRAY_SIZE,
   symbol,
-  setProperty,
+  setProperty
 } from './utils.js';
 
 import _VERSION from '../.internal/VERSION.js';
 import VERSION from '../VERSION.js';
 
-describe(basename, function() {
-  it('should support loading ' + basename + ' as the "lodash" module', function() {
+describe(basename, () => {
+  it(`should support loading ${basename} as the "lodash" module`, () => {
     if (amd) {
       assert.strictEqual((lodashModule || {}).moduleName, 'lodash');
     }
   });
 
-  it('should support loading ' + basename + ' with the Require.js "shim" configuration option', function() {
+  it(`should support loading ${basename} with the Require.js "shim" configuration option`, () => {
     if (amd && lodashStable.includes(ui.loaderPath, 'requirejs')) {
       assert.strictEqual((shimmedModule || {}).moduleName, 'shimmed');
     }
   });
 
-  it('should support loading ' + basename + ' as the "underscore" module', function() {
+  it(`should support loading ${basename} as the "underscore" module`, () => {
     if (amd) {
       assert.strictEqual((underscoreModule || {}).moduleName, 'underscore');
     }
   });
 
-  it('should support loading ' + basename + ' in a web worker', function(done) {
+  it(`should support loading ${basename} in a web worker`, (done) => {
     if (Worker) {
-      var limit = 30000 / QUnit.config.asyncRetries,
-          start = +new Date;
+      let limit = 30000 / QUnit.config.asyncRetries,
+        start = +new Date;
 
       var attempt = function() {
-        var actual = _VERSION;
+        const actual = _VERSION;
         if ((new Date - start) < limit && typeof actual != 'string') {
           setTimeout(attempt, 16);
           return;
@@ -57,15 +57,15 @@ describe(basename, function() {
     }
   });
 
-  it('should not add `Function.prototype` extensions to lodash', function() {
+  it('should not add `Function.prototype` extensions to lodash', () => {
     if (lodashBizarro) {
       assert.ok(!('_method' in lodashBizarro));
     }
   });
 
-  it('should avoid non-native built-ins', function() {
+  it('should avoid non-native built-ins', () => {
     function message(lodashMethod, nativeMethod) {
-      return '`' + lodashMethod + '` should avoid overwritten native `' + nativeMethod + '`';
+      return `\`${lodashMethod}\` should avoid overwritten native \`${nativeMethod}\``;
     }
 
     function Foo() {
@@ -73,9 +73,9 @@ describe(basename, function() {
     }
     Foo.prototype.b = 2;
 
-    var object = { 'a': 1 },
-        otherObject = { 'b': 2 },
-        largeArray = lodashStable.times(LARGE_ARRAY_SIZE, lodashStable.constant(object));
+    let object = { 'a': 1 },
+      otherObject = { 'b': 2 },
+      largeArray = lodashStable.times(LARGE_ARRAY_SIZE, lodashStable.constant(object));
 
     if (lodashBizarro) {
       try {
@@ -83,7 +83,7 @@ describe(basename, function() {
       } catch (e) {
         actual = null;
       }
-      var label = message('_.create', 'Object.create');
+      let label = message('_.create', 'Object.create');
       assert.ok(actual instanceof Foo, label);
 
       try {
@@ -114,7 +114,7 @@ describe(basename, function() {
 
       try {
         // Avoid buggy symbol detection in Babel's `_typeof` helper.
-        var symObject = setProperty(Object(symbol), 'constructor', Object);
+        const symObject = setProperty(Object(symbol), 'constructor', Object);
         actual = [
           Symbol ? lodashBizarro.clone(symObject) : {},
           Symbol ? lodashBizarro.isEqual(symObject, Object(symbol)) : false,

@@ -3,19 +3,17 @@ import lodashStable from 'lodash';
 import { map, falsey, stubFalse, args, slice, symbol, weakMap, realm } from './utils.js';
 import isMap from '../isMap.js';
 
-describe('isMap', function() {
-  it('should return `true` for maps', function() {
+describe('isMap', () => {
+  it('should return `true` for maps', () => {
     if (Map) {
       assert.strictEqual(isMap(map), true);
     }
   });
 
-  it('should return `false` for non-maps', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-maps', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isMap(value) : isMap();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isMap(value) : isMap());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -34,18 +32,16 @@ describe('isMap', function() {
     assert.strictEqual(isMap(weakMap), false);
   });
 
-  it('should work for objects with a non-function `constructor` (test in IE 11)', function() {
-    var values = [false, true],
-        expected = lodashStable.map(values, stubFalse);
+  it('should work for objects with a non-function `constructor` (test in IE 11)', () => {
+    let values = [false, true],
+      expected = lodashStable.map(values, stubFalse);
 
-    var actual = lodashStable.map(values, function(value) {
-      return isMap({ 'constructor': value });
-    });
+    const actual = lodashStable.map(values, (value) => isMap({ 'constructor': value }));
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should work with maps from another realm', function() {
+  it('should work with maps from another realm', () => {
     if (realm.map) {
       assert.strictEqual(isMap(realm.map), true);
     }

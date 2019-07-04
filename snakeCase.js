@@ -1,4 +1,4 @@
-import words from './words.js'
+import words from './words.js';
 
 /**
  * Converts `string` to
@@ -27,6 +27,6 @@ const snakeCase = (string) => (
   words(`${string}`.replace(/['\u2019]/g, '')).reduce((result, word, index) => (
     result + (index ? '_' : '') + word.toLowerCase()
   ), '')
-)
+);
 
-export default snakeCase
+export default snakeCase;

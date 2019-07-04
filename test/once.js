@@ -1,20 +1,20 @@
 import assert from 'assert';
 import { _ } from './utils.js';
 
-describe('once', function() {
-  it('should invoke `func` once', function() {
-    var count = 0,
-        once = _.once(function() { return ++count; });
+describe('once', () => {
+  it('should invoke `func` once', () => {
+    let count = 0,
+      once = _.once(() => ++count);
 
     once();
     assert.strictEqual(once(), 1);
     assert.strictEqual(count, 1);
   });
 
-  it('should ignore recursive calls', function() {
-    var count = 0;
+  it('should ignore recursive calls', () => {
+    let count = 0;
 
-    var once = _.once(function() {
+    var once = _.once(() => {
       once();
       return ++count;
     });
@@ -23,8 +23,8 @@ describe('once', function() {
     assert.strictEqual(count, 1);
   });
 
-  it('should not throw more than once', function() {
-    var once = _.once(function() {
+  it('should not throw more than once', () => {
+    const once = _.once(() => {
       throw new Error;
     });
 

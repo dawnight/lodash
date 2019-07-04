@@ -1,5 +1,5 @@
-import getSymbols from './getSymbols.js'
-import keys from '../keys.js'
+import getSymbols from './getSymbols.js';
+import keys from '../keys.js';
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -9,11 +9,11 @@ import keys from '../keys.js'
  * @returns {Array} Returns the array of property names and symbols.
  */
 function getAllKeys(object) {
-  const result = keys(object)
+  const result = keys(object);
   if (!Array.isArray(object)) {
-    result.push(...getSymbols(object))
+    result.push(...getSymbols(object));
   }
-  return result
+  return result;
 }
 
-export default getAllKeys
+export default getAllKeys;

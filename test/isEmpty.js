@@ -10,15 +10,15 @@ import {
   push,
   arrayProto,
   realm,
-  MAX_SAFE_INTEGER,
+  MAX_SAFE_INTEGER
 } from './utils.js';
 
 import isEmpty from '../isEmpty.js';
 
-describe('isEmpty', function() {
-  it('should return `true` for empty values', function() {
-    var expected = lodashStable.map(empties, stubTrue),
-        actual = lodashStable.map(empties, isEmpty);
+describe('isEmpty', () => {
+  it('should return `true` for empty values', () => {
+    let expected = lodashStable.map(empties, stubTrue),
+      actual = lodashStable.map(empties, isEmpty);
 
     assert.deepStrictEqual(actual, expected);
 
@@ -36,21 +36,21 @@ describe('isEmpty', function() {
     }
   });
 
-  it('should return `false` for non-empty values', function() {
+  it('should return `false` for non-empty values', () => {
     assert.strictEqual(isEmpty([0]), false);
     assert.strictEqual(isEmpty({ 'a': 0 }), false);
     assert.strictEqual(isEmpty('a'), false);
   });
 
-  it('should work with an object that has a `length` property', function() {
+  it('should work with an object that has a `length` property', () => {
     assert.strictEqual(isEmpty({ 'length': 0 }), false);
   });
 
-  it('should work with `arguments` objects', function() {
+  it('should work with `arguments` objects', () => {
     assert.strictEqual(isEmpty(args), false);
   });
 
-  it('should work with prototype objects', function() {
+  it('should work with prototype objects', () => {
     function Foo() {}
     Foo.prototype = { 'constructor': Foo };
 
@@ -60,7 +60,7 @@ describe('isEmpty', function() {
     assert.strictEqual(isEmpty(Foo.prototype), false);
   });
 
-  it('should work with jQuery/MooTools DOM query collections', function() {
+  it('should work with jQuery/MooTools DOM query collections', () => {
     function Foo(elements) {
       push.apply(this, elements);
     }
@@ -69,9 +69,9 @@ describe('isEmpty', function() {
     assert.strictEqual(isEmpty(new Foo([])), true);
   });
 
-  it('should work with maps', function() {
+  it('should work with maps', () => {
     if (Map) {
-      lodashStable.each([new Map, realm.map], function(map) {
+      lodashStable.each([new Map, realm.map], (map) => {
         assert.strictEqual(isEmpty(map), true);
         map.set('a', 1);
         assert.strictEqual(isEmpty(map), false);
@@ -80,9 +80,9 @@ describe('isEmpty', function() {
     }
   });
 
-  it('should work with sets', function() {
+  it('should work with sets', () => {
     if (Set) {
-      lodashStable.each([new Set, realm.set], function(set) {
+      lodashStable.each([new Set, realm.set], (set) => {
         assert.strictEqual(isEmpty(set), true);
         set.add(1);
         assert.strictEqual(isEmpty(set), false);
@@ -91,29 +91,29 @@ describe('isEmpty', function() {
     }
   });
 
-  it('should not treat objects with negative lengths as array-like', function() {
+  it('should not treat objects with negative lengths as array-like', () => {
     function Foo() {}
     Foo.prototype.length = -1;
 
     assert.strictEqual(isEmpty(new Foo), true);
   });
 
-  it('should not treat objects with lengths larger than `MAX_SAFE_INTEGER` as array-like', function() {
+  it('should not treat objects with lengths larger than `MAX_SAFE_INTEGER` as array-like', () => {
     function Foo() {}
     Foo.prototype.length = MAX_SAFE_INTEGER + 1;
 
     assert.strictEqual(isEmpty(new Foo), true);
   });
 
-  it('should not treat objects with non-number lengths as array-like', function() {
+  it('should not treat objects with non-number lengths as array-like', () => {
     assert.strictEqual(isEmpty({ 'length': '0' }), false);
   });
 
-  it('should return an unwrapped value when implicitly chaining', function() {
+  it('should return an unwrapped value when implicitly chaining', () => {
     assert.strictEqual(_({}).isEmpty(), true);
   });
 
-  it('should return a wrapped value when explicitly chaining', function() {
+  it('should return a wrapped value when explicitly chaining', () => {
     assert.ok(_({}).chain().isEmpty() instanceof _);
   });
 });

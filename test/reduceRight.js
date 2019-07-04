@@ -3,15 +3,15 @@ import lodashStable from 'lodash';
 import { slice } from './utils.js';
 import reduceRight from '../reduceRight.js';
 
-describe('reduceRight', function() {
-  var array = [1, 2, 3];
+describe('reduceRight', () => {
+  const array = [1, 2, 3];
 
-  it('should use the last element of a collection as the default `accumulator`', function() {
+  it('should use the last element of a collection as the default `accumulator`', () => {
     assert.strictEqual(reduceRight(array), 3);
   });
 
-  it('should provide correct `iteratee` arguments when iterating an array', function() {
-    var args;
+  it('should provide correct `iteratee` arguments when iterating an array', () => {
+    let args;
 
     reduceRight(array, function() {
       args || (args = slice.call(arguments));
@@ -27,12 +27,12 @@ describe('reduceRight', function() {
     assert.deepStrictEqual(args, [3, 2, 1, array]);
   });
 
-  it('should provide correct `iteratee` arguments when iterating an object', function() {
-    var args,
-        object = { 'a': 1, 'b': 2 },
-        isFIFO = lodashStable.keys(object)[0] == 'a';
+  it('should provide correct `iteratee` arguments when iterating an object', () => {
+    let args,
+      object = { 'a': 1, 'b': 2 },
+      isFIFO = lodashStable.keys(object)[0] == 'a';
 
-    var expected = isFIFO
+    let expected = isFIFO
       ? [0, 2, 'b', object]
       : [0, 1, 'a', object];
 

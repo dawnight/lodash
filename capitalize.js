@@ -1,4 +1,4 @@
-import upperFirst from './upperFirst.js'
+import upperFirst from './upperFirst.js';
 
 /**
  * Converts the first character of `string` to upper case and the remaining
@@ -13,7 +13,7 @@ import upperFirst from './upperFirst.js'
  * capitalize('FRED')
  * // => 'Fred'
  */
-const capitalize = (string) =>  upperFirst(string.toLowerCase())
+const capitalize = (string) =>  upperFirst(string.toLowerCase());
 
 
-export default capitalize
+export default capitalize;

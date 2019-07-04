@@ -1,5 +1,5 @@
-import getTag from './.internal/getTag.js'
-import isObject from './isObject.js'
+import getTag from './.internal/getTag.js';
+import isObject from './isObject.js';
 
 /**
  * Checks if `value` is classified as a `Function` object.
@@ -18,13 +18,13 @@ import isObject from './isObject.js'
  */
 function isFunction(value) {
   if (!isObject(value)) {
-    return false
+    return false;
   }
   // The use of `Object#toString` avoids issues with the `typeof` operator
   // in Safari 9 which returns 'object' for typed arrays and other constructors.
-  const tag = getTag(value)
+  const tag = getTag(value);
   return tag == '[object Function]' || tag == '[object AsyncFunction]' ||
-    tag == '[object GeneratorFunction]' || tag == '[object Proxy]'
+    tag == '[object GeneratorFunction]' || tag == '[object Proxy]';
 }
 
-export default isFunction
+export default isFunction;

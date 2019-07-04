@@ -3,21 +3,17 @@ import lodashStable from 'lodash';
 import { falsey, args, slice, symbol, realm } from './utils.js';
 import isNil from '../isNil.js';
 
-describe('isNil', function() {
-  it('should return `true` for nullish values', function() {
+describe('isNil', () => {
+  it('should return `true` for nullish values', () => {
     assert.strictEqual(isNil(null), true);
     assert.strictEqual(isNil(), true);
     assert.strictEqual(isNil(undefined), true);
   });
 
-  it('should return `false` for non-nullish values', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value == null;
-    });
+  it('should return `false` for non-nullish values', () => {
+    const expected = lodashStable.map(falsey, (value) => value == null);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isNil(value) : isNil();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isNil(value) : isNil());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -38,7 +34,7 @@ describe('isNil', function() {
     }
   });
 
-  it('should work with nils from another realm', function() {
+  it('should work with nils from another realm', () => {
     if (realm.object) {
       assert.strictEqual(isNil(realm.null), true);
       assert.strictEqual(isNil(realm.undefined), true);

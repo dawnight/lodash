@@ -7,7 +7,7 @@ import prototype from '../prototype.js';
 import countBy from '../countBy.js';
 import filter from '../filter.js';
 
-describe('mixin', function() {
+describe('mixin', () => {
   function reset(wrapper) {
     delete wrapper.a;
     delete wrapper.prototype.a;
@@ -21,7 +21,7 @@ describe('mixin', function() {
     }
     if (has(value, '__wrapped__')) {
       var actions = slice.call(value.__actions__),
-          chain = value.__chain__;
+        chain = value.__chain__;
 
       value = value.__wrapped__;
     }
@@ -34,10 +34,10 @@ describe('mixin', function() {
     return getUnwrappedValue(this);
   };
 
-  var array = ['a'],
-      source = { 'a': function(array) { return array[0]; }, 'b': 'B' };
+  let array = ['a'],
+    source = { 'a': function(array) { return array[0]; }, 'b': 'B' };
 
-  it('should mixin `source` methods into lodash', function() {
+  it('should mixin `source` methods into lodash', () => {
     mixin(source);
 
     assert.strictEqual(_.a(array), 'a');
@@ -48,7 +48,7 @@ describe('mixin', function() {
     reset(_);
   });
 
-  it('should mixin chaining methods by reference', function() {
+  it('should mixin chaining methods by reference', () => {
     mixin(source);
     _.a = stubB;
 
@@ -58,8 +58,8 @@ describe('mixin', function() {
     reset(_);
   });
 
-  it('should use a default `object` of `this`', function() {
-    var object = lodashStable.create(_);
+  it('should use a default `object` of `this`', () => {
+    const object = lodashStable.create(_);
     object.mixin(source);
 
     assert.strictEqual(object.a(array), 'a');
@@ -69,17 +69,17 @@ describe('mixin', function() {
     reset(_);
   });
 
-  it('should accept an `object`', function() {
-    var object = {};
+  it('should accept an `object`', () => {
+    const object = {};
     mixin(object, source);
     assert.strictEqual(object.a(array), 'a');
   });
 
-  it('should accept a function `object`', function() {
+  it('should accept a function `object`', () => {
     mixin(Wrapper, source);
 
-    var wrapped = Wrapper(array),
-        actual = wrapped.a();
+    let wrapped = Wrapper(array),
+      actual = wrapped.a();
 
     assert.strictEqual(actual.value(), 'a');
     assert.ok(actual instanceof Wrapper);
@@ -87,8 +87,8 @@ describe('mixin', function() {
     reset(Wrapper);
   });
 
-  it('should return `object`', function() {
-    var object = {};
+  it('should return `object`', () => {
+    const object = {};
     assert.strictEqual(mixin(object, source), object);
     assert.strictEqual(mixin(Wrapper, source), Wrapper);
     assert.strictEqual(mixin(), _);
@@ -96,28 +96,28 @@ describe('mixin', function() {
     reset(Wrapper);
   });
 
-  it('should not assign inherited `source` methods', function() {
+  it('should not assign inherited `source` methods', () => {
     function Foo() {}
     Foo.prototype.a = noop;
 
-    var object = {};
+    const object = {};
     assert.strictEqual(mixin(object, new Foo), object);
   });
 
-  it('should accept an `options`', function() {
+  it('should accept an `options`', () => {
     function message(func, chain) {
-      return (func === _ ? 'lodash' : 'given') + ' function should ' + (chain ? '' : 'not ') + 'chain';
+      return `${func === _ ? 'lodash' : 'given'} function should ${chain ? '' : 'not '}chain`;
     }
 
-    lodashStable.each([_, Wrapper], function(func) {
-      lodashStable.each([{ 'chain': false }, { 'chain': true }], function(options) {
+    lodashStable.each([_, Wrapper], (func) => {
+      lodashStable.each([{ 'chain': false }, { 'chain': true }], (options) => {
         if (func === _) {
           mixin(source, options);
         } else {
           mixin(func, source, options);
         }
-        var wrapped = func(array),
-            actual = wrapped.a();
+        let wrapped = func(array),
+          actual = wrapped.a();
 
         if (options.chain) {
           assert.strictEqual(actual.value(), 'a', message(func, true));
@@ -131,14 +131,14 @@ describe('mixin', function() {
     });
   });
 
-  it('should not extend lodash when an `object` is given with an empty `options` object', function() {
+  it('should not extend lodash when an `object` is given with an empty `options` object', () => {
     mixin({ 'a': noop }, {});
     assert.ok(!('a' in _));
     reset(_);
   });
 
-  it('should not error for non-object `options` values', function() {
-    var pass = true;
+  it('should not error for non-object `options` values', () => {
+    let pass = true;
 
     try {
       mixin({}, source, 1);
@@ -159,11 +159,11 @@ describe('mixin', function() {
     reset(_);
   });
 
-  it('should not return the existing wrapped value when chaining', function() {
-    lodashStable.each([_, Wrapper], function(func) {
+  it('should not return the existing wrapped value when chaining', () => {
+    lodashStable.each([_, Wrapper], (func) => {
       if (func === _) {
         var wrapped = _(source),
-            actual = wrapped.mixin();
+          actual = wrapped.mixin();
 
         assert.strictEqual(actual.value(), _);
       }
@@ -176,11 +176,11 @@ describe('mixin', function() {
     });
   });
 
-  it('should produce methods that work in a lazy sequence', function() {
+  it('should produce methods that work in a lazy sequence', () => {
     mixin({ 'a': countBy, 'b': filter });
 
-    var array = lodashStable.range(LARGE_ARRAY_SIZE),
-        actual = _(array).a().map(square).b(isEven).take().value();
+    let array = lodashStable.range(LARGE_ARRAY_SIZE),
+      actual = _(array).a().map(square).b(isEven).take().value();
 
     assert.deepEqual(actual, _.take(_.b(_.map(_.a(array), square), isEven)));
 

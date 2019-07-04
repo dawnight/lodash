@@ -3,9 +3,9 @@ import lodashStable from 'lodash';
 import { _, stubTrue, noop, numberProto, stubFalse, empties } from './utils.js';
 import isMatch from '../isMatch.js';
 
-describe('matches methods', function() {
-  lodashStable.each(['matches', 'isMatch'], function(methodName) {
-    var isMatches = methodName == 'matches';
+describe('matches methods', () => {
+  lodashStable.each(['matches', 'isMatch'], (methodName) => {
+    const isMatches = methodName == 'matches';
 
     function matches(source) {
       return isMatches ? _.matches(source) : function(object) {
@@ -13,9 +13,9 @@ describe('matches methods', function() {
       };
     }
 
-    it('`_.' + methodName + '` should perform a deep comparison between `source` and `object`', function() {
-      var object = { 'a': 1, 'b': 2, 'c': 3 },
-          par = matches({ 'a': 1 });
+    it(`\`_.${methodName}\` should perform a deep comparison between \`source\` and \`object\``, () => {
+      let object = { 'a': 1, 'b': 2, 'c': 3 },
+        par = matches({ 'a': 1 });
 
       assert.strictEqual(par(object), true);
 
@@ -34,45 +34,45 @@ describe('matches methods', function() {
       assert.strictEqual(par(object), true);
     });
 
-    it('`_.' + methodName + '` should match inherited string keyed `object` properties', function() {
+    it(`\`_.${methodName}\` should match inherited string keyed \`object\` properties`, () => {
       function Foo() {
         this.a = 1;
       }
       Foo.prototype.b = 2;
 
-      var object = { 'a': new Foo },
-          par = matches({ 'a': { 'b': 2 } });
+      let object = { 'a': new Foo },
+        par = matches({ 'a': { 'b': 2 } });
 
       assert.strictEqual(par(object), true);
     });
 
-    it('`_.' + methodName + '` should not match by inherited `source` properties', function() {
+    it(`\`_.${methodName}\` should not match by inherited \`source\` properties`, () => {
       function Foo() {
         this.a = 1;
       }
       Foo.prototype.b = 2;
 
-      var objects = [{ 'a': 1 }, { 'a': 1, 'b': 2 }],
-          source = new Foo,
-          actual = lodashStable.map(objects, matches(source)),
-          expected = lodashStable.map(objects, stubTrue);
+      let objects = [{ 'a': 1 }, { 'a': 1, 'b': 2 }],
+        source = new Foo,
+        actual = lodashStable.map(objects, matches(source)),
+        expected = lodashStable.map(objects, stubTrue);
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should compare a variety of `source` property values', function() {
-      var object1 = { 'a': false, 'b': true, 'c': '3', 'd': 4, 'e': [5], 'f': { 'g': 6 } },
-          object2 = { 'a': 0, 'b': 1, 'c': 3, 'd': '4', 'e': ['5'], 'f': { 'g': '6' } },
-          par = matches(object1);
+    it(`\`_.${methodName}\` should compare a variety of \`source\` property values`, () => {
+      let object1 = { 'a': false, 'b': true, 'c': '3', 'd': 4, 'e': [5], 'f': { 'g': 6 } },
+        object2 = { 'a': 0, 'b': 1, 'c': 3, 'd': '4', 'e': ['5'], 'f': { 'g': '6' } },
+        par = matches(object1);
 
       assert.strictEqual(par(object1), true);
       assert.strictEqual(par(object2), false);
     });
 
-    it('`_.' + methodName + '` should match `-0` as `0`', function() {
-      var object1 = { 'a': -0 },
-          object2 = { 'a': 0 },
-          par = matches(object1);
+    it(`\`_.${methodName}\` should match \`-0\` as \`0\``, () => {
+      let object1 = { 'a': -0 },
+        object2 = { 'a': 0 },
+        par = matches(object1);
 
       assert.strictEqual(par(object2), true);
 
@@ -80,49 +80,49 @@ describe('matches methods', function() {
       assert.strictEqual(par(object1), true);
     });
 
-    it('`_.' + methodName + '` should compare functions by reference', function() {
-      var object1 = { 'a': lodashStable.noop },
-          object2 = { 'a': noop },
-          object3 = { 'a': {} },
-          par = matches(object1);
+    it(`\`_.${methodName}\` should compare functions by reference`, () => {
+      let object1 = { 'a': lodashStable.noop },
+        object2 = { 'a': noop },
+        object3 = { 'a': {} },
+        par = matches(object1);
 
       assert.strictEqual(par(object1), true);
       assert.strictEqual(par(object2), false);
       assert.strictEqual(par(object3), false);
     });
 
-    it('`_.' + methodName + '` should work with a function for `object`', function() {
+    it(`\`_.${methodName}\` should work with a function for \`object\``, () => {
       function Foo() {}
       Foo.a = { 'b': 2, 'c': 3 };
 
-      var par = matches({ 'a': { 'b': 2 } });
+      const par = matches({ 'a': { 'b': 2 } });
       assert.strictEqual(par(Foo), true);
     });
 
-    it('`_.' + methodName + '` should work with a function for `source`', function() {
+    it(`\`_.${methodName}\` should work with a function for \`source\``, () => {
       function Foo() {}
       Foo.a = 1;
       Foo.b = function() {};
       Foo.c = 3;
 
-      var objects = [{ 'a': 1 }, { 'a': 1, 'b': Foo.b, 'c': 3 }],
-          actual = lodashStable.map(objects, matches(Foo));
+      let objects = [{ 'a': 1 }, { 'a': 1, 'b': Foo.b, 'c': 3 }],
+        actual = lodashStable.map(objects, matches(Foo));
 
       assert.deepStrictEqual(actual, [false, true]);
     });
 
-    it('`_.' + methodName + '` should work with a non-plain `object`', function() {
+    it(`\`_.${methodName}\` should work with a non-plain \`object\``, () => {
       function Foo(object) { lodashStable.assign(this, object); }
 
-      var object = new Foo({ 'a': new Foo({ 'b': 2, 'c': 3 }) }),
-          par = matches({ 'a': { 'b': 2 } });
+      let object = new Foo({ 'a': new Foo({ 'b': 2, 'c': 3 }) }),
+        par = matches({ 'a': { 'b': 2 } });
 
       assert.strictEqual(par(object), true);
     });
 
-    it('`_.' + methodName + '` should partial match arrays', function() {
-      var objects = [{ 'a': ['b'] }, { 'a': ['c', 'd'] }],
-          actual = lodashStable.filter(objects, matches({ 'a': ['d'] }));
+    it(`\`_.${methodName}\` should partial match arrays`, () => {
+      let objects = [{ 'a': ['b'] }, { 'a': ['c', 'd'] }],
+        actual = lodashStable.filter(objects, matches({ 'a': ['d'] }));
 
       assert.deepStrictEqual(actual, [objects[1]]);
 
@@ -133,33 +133,33 @@ describe('matches methods', function() {
       assert.deepStrictEqual(actual, []);
     });
 
-    it('`_.' + methodName + '` should partial match arrays with duplicate values', function() {
-      var objects = [{ 'a': [1, 2] }, { 'a': [2, 2] }],
-          actual = lodashStable.filter(objects, matches({ 'a': [2, 2] }));
+    it(`\`_.${methodName}\` should partial match arrays with duplicate values`, () => {
+      let objects = [{ 'a': [1, 2] }, { 'a': [2, 2] }],
+        actual = lodashStable.filter(objects, matches({ 'a': [2, 2] }));
 
       assert.deepStrictEqual(actual, [objects[1]]);
     });
 
-    it('should partial match arrays of objects', function() {
-      var objects = [
+    it('should partial match arrays of objects', () => {
+      const objects = [
         { 'a': [{ 'b': 1, 'c': 2 }, { 'b': 4, 'c': 5, 'd': 6 }] },
         { 'a': [{ 'b': 1, 'c': 2 }, { 'b': 4, 'c': 6, 'd': 7 }] }
       ];
 
-      var actual = lodashStable.filter(objects, matches({ 'a': [{ 'b': 1 }, { 'b': 4, 'c': 5 }] }));
+      const actual = lodashStable.filter(objects, matches({ 'a': [{ 'b': 1 }, { 'b': 4, 'c': 5 }] }));
       assert.deepStrictEqual(actual, [objects[0]]);
     });
 
-    it('`_.' + methodName + '` should partial match maps', function() {
+    it(`\`_.${methodName}\` should partial match maps`, () => {
       if (Map) {
-        var objects = [{ 'a': new Map }, { 'a': new Map }];
+        const objects = [{ 'a': new Map }, { 'a': new Map }];
         objects[0].a.set('a', 1);
         objects[1].a.set('a', 1);
         objects[1].a.set('b', 2);
 
-        var map = new Map;
+        const map = new Map;
         map.set('b', 2);
-        var actual = lodashStable.filter(objects, matches({ 'a': map }));
+        let actual = lodashStable.filter(objects, matches({ 'a': map }));
 
         assert.deepStrictEqual(actual, [objects[1]]);
 
@@ -175,16 +175,16 @@ describe('matches methods', function() {
       }
     });
 
-    it('`_.' + methodName + '` should partial match sets', function() {
+    it(`\`_.${methodName}\` should partial match sets`, () => {
       if (Set) {
-        var objects = [{ 'a': new Set }, { 'a': new Set }];
+        const objects = [{ 'a': new Set }, { 'a': new Set }];
         objects[0].a.add(1);
         objects[1].a.add(1);
         objects[1].a.add(2);
 
-        var set = new Set;
+        const set = new Set;
         set.add(2);
-        var actual = lodashStable.filter(objects, matches({ 'a': set }));
+        let actual = lodashStable.filter(objects, matches({ 'a': set }));
 
         assert.deepStrictEqual(actual, [objects[1]]);
 
@@ -200,10 +200,10 @@ describe('matches methods', function() {
       }
     });
 
-    it('`_.' + methodName + '` should match `undefined` values', function() {
-      var objects = [{ 'a': 1 }, { 'a': 1, 'b': 1 }, { 'a': 1, 'b': undefined }],
-          actual = lodashStable.map(objects, matches({ 'b': undefined })),
-          expected = [false, false, true];
+    it(`\`_.${methodName}\` should match \`undefined\` values`, () => {
+      let objects = [{ 'a': 1 }, { 'a': 1, 'b': 1 }, { 'a': 1, 'b': undefined }],
+        actual = lodashStable.map(objects, matches({ 'b': undefined })),
+        expected = [false, false, true];
 
       assert.deepStrictEqual(actual, expected);
 
@@ -217,7 +217,7 @@ describe('matches methods', function() {
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should match `undefined` values on primitives', function() {
+    it(`\`_.${methodName}\` should match \`undefined\` values on primitives`, () => {
       numberProto.a = 1;
       numberProto.b = undefined;
 
@@ -244,12 +244,12 @@ describe('matches methods', function() {
       delete numberProto.b;
     });
 
-    it('`_.' + methodName + '` should return `false` when `object` is nullish', function() {
-      var values = [, null, undefined],
-          expected = lodashStable.map(values, stubFalse),
-          par = matches({ 'a': 1 });
+    it(`\`_.${methodName}\` should return \`false\` when \`object\` is nullish`, () => {
+      let values = [, null, undefined],
+        expected = lodashStable.map(values, stubFalse),
+        par = matches({ 'a': 1 });
 
-      var actual = lodashStable.map(values, function(value, index) {
+      const actual = lodashStable.map(values, (value, index) => {
         try {
           return index ? par(value) : par();
         } catch (e) {}
@@ -258,24 +258,24 @@ describe('matches methods', function() {
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should return `true` when comparing an empty `source`', function() {
-      var object = { 'a': 1 },
-          expected = lodashStable.map(empties, stubTrue);
+    it(`\`_.${methodName}\` should return \`true\` when comparing an empty \`source\``, () => {
+      let object = { 'a': 1 },
+        expected = lodashStable.map(empties, stubTrue);
 
-      var actual = lodashStable.map(empties, function(value) {
-        var par = matches(value);
+      const actual = lodashStable.map(empties, (value) => {
+        const par = matches(value);
         return par(object);
       });
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should return `true` when comparing an empty `source` to a nullish `object`', function() {
-      var values = [, null, undefined],
-          expected = lodashStable.map(values, stubTrue),
-          par = matches({});
+    it(`\`_.${methodName}\` should return \`true\` when comparing an empty \`source\` to a nullish \`object\``, () => {
+      let values = [, null, undefined],
+        expected = lodashStable.map(values, stubTrue),
+        par = matches({});
 
-      var actual = lodashStable.map(values, function(value, index) {
+      const actual = lodashStable.map(values, (value, index) => {
         try {
           return index ? par(value) : par();
         } catch (e) {}
@@ -284,9 +284,9 @@ describe('matches methods', function() {
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should return `true` when comparing a `source` of empty arrays and objects', function() {
-      var objects = [{ 'a': [1], 'b': { 'c': 1 } }, { 'a': [2, 3], 'b': { 'd': 2 } }],
-          actual = lodashStable.filter(objects, matches({ 'a': [], 'b': {} }));
+    it(`\`_.${methodName}\` should return \`true\` when comparing a \`source\` of empty arrays and objects`, () => {
+      let objects = [{ 'a': [1], 'b': { 'c': 1 } }, { 'a': [2, 3], 'b': { 'd': 2 } }],
+        actual = lodashStable.filter(objects, matches({ 'a': [], 'b': {} }));
 
       assert.deepStrictEqual(actual, objects);
     });

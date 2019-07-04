@@ -1,8 +1,8 @@
 import assert from 'assert';
 import lodashStable from 'lodash';
 
-describe('lodash(...) methods that return new wrapped values', function() {
-  var funcs = [
+describe('lodash(...) methods that return new wrapped values', () => {
+  const funcs = [
     'castArray',
     'concat',
     'difference',
@@ -32,11 +32,11 @@ describe('lodash(...) methods that return new wrapped values', function() {
     'xorWith'
   ];
 
-  lodashStable.each(funcs, function(methodName) {
-    it('`_(...).' + methodName + '` should return a new wrapped value', function() {
-      var value = methodName == 'split' ? 'abc' : [1, 2, 3],
-          wrapped = _(value),
-          actual = wrapped[methodName]();
+  lodashStable.each(funcs, (methodName) => {
+    it(`\`_(...).${methodName}\` should return a new wrapped value`, () => {
+      let value = methodName == 'split' ? 'abc' : [1, 2, 3],
+        wrapped = _(value),
+        actual = wrapped[methodName]();
 
       assert.ok(actual instanceof _);
       assert.notStrictEqual(actual, wrapped);

@@ -3,49 +3,45 @@ import lodashStable from 'lodash';
 import { falsey, LARGE_ARRAY_SIZE, isEven } from './utils.js';
 import take from '../take.js';
 
-describe('take', function() {
-  var array = [1, 2, 3];
+describe('take', () => {
+  const array = [1, 2, 3];
 
-  it('should take the first two elements', function() {
+  it('should take the first two elements', () => {
     assert.deepStrictEqual(take(array, 2), [1, 2]);
   });
 
-  it('should treat falsey `n` values, except `undefined`, as `0`', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value === undefined ? [1] : [];
-    });
+  it('should treat falsey `n` values, except `undefined`, as `0`', () => {
+    const expected = lodashStable.map(falsey, (value) => value === undefined ? [1] : []);
 
-    var actual = lodashStable.map(falsey, function(n) {
-      return take(array, n);
-    });
+    const actual = lodashStable.map(falsey, (n) => take(array, n));
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return an empty array when `n` < `1`', function() {
-    lodashStable.each([0, -1, -Infinity], function(n) {
+  it('should return an empty array when `n` < `1`', () => {
+    lodashStable.each([0, -1, -Infinity], (n) => {
       assert.deepStrictEqual(take(array, n), []);
     });
   });
 
-  it('should return all elements when `n` >= `length`', function() {
-    lodashStable.each([3, 4, Math.pow(2, 32), Infinity], function(n) {
+  it('should return all elements when `n` >= `length`', () => {
+    lodashStable.each([3, 4, Math.pow(2, 32), Infinity], (n) => {
       assert.deepStrictEqual(take(array, n), array);
     });
   });
 
-  it('should work as an iteratee for methods like `_.map`', function() {
-    var array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-        actual = lodashStable.map(array, take);
+  it('should work as an iteratee for methods like `_.map`', () => {
+    let array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+      actual = lodashStable.map(array, take);
 
     assert.deepStrictEqual(actual, [[1], [4], [7]]);
   });
 
-  it('should work in a lazy sequence', function() {
+  it('should work in a lazy sequence', () => {
     var array = lodashStable.range(1, LARGE_ARRAY_SIZE + 1),
-        predicate = function(value) { values.push(value); return isEven(value); },
-        values = [],
-        actual = _(array).take(2).take().value();
+      predicate = function(value) { values.push(value); return isEven(value); },
+      values = [],
+      actual = _(array).take(2).take().value();
 
     assert.deepEqual(actual, take(take(array, 2)));
 

@@ -9,15 +9,15 @@ import {
   stubFalse,
   symbol,
   defineProperty,
-  realm,
+  realm
 } from './utils.js';
 
 import isPlainObject from '../isPlainObject.js';
 
-describe('isPlainObject', function() {
-  var element = document && document.createElement('div');
+describe('isPlainObject', () => {
+  const element = document && document.createElement('div');
 
-  it('should detect plain objects', function() {
+  it('should detect plain objects', () => {
     function Foo(a) {
       this.a = 1;
     }
@@ -29,33 +29,33 @@ describe('isPlainObject', function() {
     assert.strictEqual(isPlainObject(new Foo(1)), false);
   });
 
-  it('should return `true` for objects with a `[[Prototype]]` of `null`', function() {
-    var object = create(null);
+  it('should return `true` for objects with a `[[Prototype]]` of `null`', () => {
+    const object = create(null);
     assert.strictEqual(isPlainObject(object), true);
 
     object.constructor = objectProto.constructor;
     assert.strictEqual(isPlainObject(object), true);
   });
 
-  it('should return `true` for objects with a `valueOf` property', function() {
+  it('should return `true` for objects with a `valueOf` property', () => {
     assert.strictEqual(isPlainObject({ 'valueOf': 0 }), true);
   });
 
-  it('should return `true` for objects with a writable `Symbol.toStringTag` property', function() {
+  it('should return `true` for objects with a writable `Symbol.toStringTag` property', () => {
     if (Symbol && Symbol.toStringTag) {
-      var object = {};
+      const object = {};
       object[Symbol.toStringTag] = 'X';
 
       assert.deepStrictEqual(isPlainObject(object), true);
     }
   });
 
-  it('should return `false` for objects with a custom `[[Prototype]]`', function() {
-    var object = create({ 'a': 1 });
+  it('should return `false` for objects with a custom `[[Prototype]]`', () => {
+    const object = create({ 'a': 1 });
     assert.strictEqual(isPlainObject(object), false);
   });
 
-  it('should return `false` for DOM elements', function() {
+  it('should return `false` for DOM elements', () => {
     if (element) {
       assert.strictEqual(isPlainObject(element), false);
     }
@@ -67,12 +67,10 @@ describe('isPlainObject', function() {
     assert.strictEqual(isPlainObject(Math), false);
   });
 
-  it('should return `false` for non-objects', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-objects', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isPlainObject(value) : isPlainObject();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isPlainObject(value) : isPlainObject());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -81,9 +79,9 @@ describe('isPlainObject', function() {
     assert.strictEqual(isPlainObject(symbol), false);
   });
 
-  it('should return `false` for objects with a read-only `Symbol.toStringTag` property', function() {
+  it('should return `false` for objects with a read-only `Symbol.toStringTag` property', () => {
     if (Symbol && Symbol.toStringTag) {
-      var object = {};
+      const object = {};
       defineProperty(object, Symbol.toStringTag, {
         'configurable': true,
         'enumerable': false,
@@ -95,18 +93,18 @@ describe('isPlainObject', function() {
     }
   });
 
-  it('should not mutate `value`', function() {
+  it('should not mutate `value`', () => {
     if (Symbol && Symbol.toStringTag) {
-      var proto = {};
+      const proto = {};
       proto[Symbol.toStringTag] = undefined;
-      var object = create(proto);
+      const object = create(proto);
 
       assert.strictEqual(isPlainObject(object), false);
       assert.ok(!lodashStable.has(object, Symbol.toStringTag));
     }
   });
 
-  it('should work with objects from another realm', function() {
+  it('should work with objects from another realm', () => {
     if (realm.object) {
       assert.strictEqual(isPlainObject(realm.object), true);
     }

@@ -13,49 +13,43 @@ import {
   args,
   symbol,
   document,
-  realm,
+  realm
 } from './utils.js';
 
 import isFunction from '../isFunction.js';
 
-describe('isFunction', function() {
-  it('should return `true` for functions', function() {
+describe('isFunction', () => {
+  it('should return `true` for functions', () => {
     assert.strictEqual(isFunction(_), true);
     assert.strictEqual(isFunction(slice), true);
   });
 
-  it('should return `true` for async functions', function() {
+  it('should return `true` for async functions', () => {
     assert.strictEqual(isFunction(asyncFunc), typeof asyncFunc == 'function');
   });
 
-  it('should return `true` for generator functions', function() {
+  it('should return `true` for generator functions', () => {
     assert.strictEqual(isFunction(genFunc), typeof genFunc == 'function');
   });
 
-  it('should return `true` for the `Proxy` constructor', function() {
+  it('should return `true` for the `Proxy` constructor', () => {
     if (Proxy) {
       assert.strictEqual(isFunction(Proxy), true);
     }
   });
 
-  it('should return `true` for array view constructors', function() {
-    var expected = lodashStable.map(arrayViews, function(type) {
-      return objToString.call(root[type]) == funcTag;
-    });
+  it('should return `true` for array view constructors', () => {
+    const expected = lodashStable.map(arrayViews, (type) => objToString.call(root[type]) == funcTag);
 
-    var actual = lodashStable.map(arrayViews, function(type) {
-      return isFunction(root[type]);
-    });
+    const actual = lodashStable.map(arrayViews, (type) => isFunction(root[type]));
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return `false` for non-functions', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-functions', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isFunction(value) : isFunction();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isFunction(value) : isFunction());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -75,7 +69,7 @@ describe('isFunction', function() {
     }
   });
 
-  it('should work with a function from another realm', function() {
+  it('should work with a function from another realm', () => {
     if (realm.function) {
       assert.strictEqual(isFunction(realm.function), true);
     }

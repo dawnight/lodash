@@ -2,17 +2,17 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import matches from '../matches.js';
 
-describe('matches', function() {
-  it('should not change behavior if `source` is modified', function() {
-    var sources = [
+describe('matches', () => {
+  it('should not change behavior if `source` is modified', () => {
+    const sources = [
       { 'a': { 'b': 2, 'c': 3 } },
       { 'a': 1, 'b': 2 },
       { 'a': 1 }
     ];
 
-    lodashStable.each(sources, function(source, index) {
-      var object = lodashStable.cloneDeep(source),
-          par = matches(source);
+    lodashStable.each(sources, (source, index) => {
+      let object = lodashStable.cloneDeep(source),
+        par = matches(source);
 
       assert.strictEqual(par(object), true);
 

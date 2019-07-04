@@ -3,27 +3,27 @@ import lodashStable from 'lodash';
 import escape from '../escape.js';
 import unescape from '../unescape.js';
 
-describe('escape', function() {
-  var escaped = '&amp;&lt;&gt;&quot;&#39;/',
-      unescaped = '&<>"\'/';
+describe('escape', () => {
+  let escaped = '&amp;&lt;&gt;&quot;&#39;/',
+    unescaped = '&<>"\'/';
 
   escaped += escaped;
   unescaped += unescaped;
 
-  it('should escape values', function() {
+  it('should escape values', () => {
     assert.strictEqual(escape(unescaped), escaped);
   });
 
-  it('should handle strings with nothing to escape', function() {
+  it('should handle strings with nothing to escape', () => {
     assert.strictEqual(escape('abc'), 'abc');
   });
 
-  it('should escape the same characters unescaped by `_.unescape`', function() {
+  it('should escape the same characters unescaped by `_.unescape`', () => {
     assert.strictEqual(escape(unescape(escaped)), escaped);
   });
 
-  lodashStable.each(['`', '/'], function(chr) {
-    it('should not escape the "' + chr + '" character', function() {
+  lodashStable.each(['`', '/'], (chr) => {
+    it(`should not escape the "${chr}" character`, () => {
       assert.strictEqual(escape(chr), chr);
     });
   });

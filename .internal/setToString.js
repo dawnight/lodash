@@ -12,7 +12,7 @@ function setToString(func, string) {
     'enumerable': false,
     'value': () => string,
     'writable': true
-  })
+  });
 }
 
-export default setToString
+export default setToString;

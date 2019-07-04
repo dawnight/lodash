@@ -1,4 +1,4 @@
-import words from './words.js'
+import words from './words.js';
 
 /**
  * Converts `string` to
@@ -24,6 +24,6 @@ const kebabCase = (string) => (
   words(`${string}`.replace(/['\u2019]/g, '')).reduce((result, word, index) => (
     result + (index ? '-' : '') + word.toLowerCase()
   ), '')
-)
+);
 
-export default kebabCase
+export default kebabCase;

@@ -3,10 +3,10 @@ import lodashStable from 'lodash';
 import { args, toArgs, arrayProto } from './utils.js';
 import bindAll from '../bindAll.js';
 
-describe('bindAll', function() {
-  var args = toArgs(['a']);
+describe('bindAll', () => {
+  const args = toArgs(['a']);
 
-  var source = {
+  const source = {
     '_n0': -2,
     '_p0': -1,
     '_a': 1,
@@ -21,33 +21,29 @@ describe('bindAll', function() {
     'd': function() { return this._d; }
   };
 
-  it('should accept individual method names', function() {
-    var object = lodashStable.cloneDeep(source);
+  it('should accept individual method names', () => {
+    const object = lodashStable.cloneDeep(source);
     bindAll(object, 'a', 'b');
 
-    var actual = lodashStable.map(['a', 'b', 'c'], function(key) {
-      return object[key].call({});
-    });
+    const actual = lodashStable.map(['a', 'b', 'c'], (key) => object[key].call({}));
 
     assert.deepStrictEqual(actual, [1, 2, undefined]);
   });
 
-  it('should accept arrays of method names', function() {
-    var object = lodashStable.cloneDeep(source);
+  it('should accept arrays of method names', () => {
+    const object = lodashStable.cloneDeep(source);
     bindAll(object, ['a', 'b'], ['c']);
 
-    var actual = lodashStable.map(['a', 'b', 'c', 'd'], function(key) {
-      return object[key].call({});
-    });
+    const actual = lodashStable.map(['a', 'b', 'c', 'd'], (key) => object[key].call({}));
 
     assert.deepStrictEqual(actual, [1, 2, 3, undefined]);
   });
 
-  it('should preserve the sign of `0`', function() {
-    var props = [-0, Object(-0), 0, Object(0)];
+  it('should preserve the sign of `0`', () => {
+    const props = [-0, Object(-0), 0, Object(0)];
 
-    var actual = lodashStable.map(props, function(key) {
-      var object = lodashStable.cloneDeep(source);
+    const actual = lodashStable.map(props, (key) => {
+      const object = lodashStable.cloneDeep(source);
       bindAll(object, key);
       return object[lodashStable.toString(key)].call({});
     });
@@ -55,19 +51,17 @@ describe('bindAll', function() {
     assert.deepStrictEqual(actual, [-2, -2, -1, -1]);
   });
 
-  it('should work with an array `object`', function() {
-    var array = ['push', 'pop'];
+  it('should work with an array `object`', () => {
+    const array = ['push', 'pop'];
     bindAll(array);
     assert.strictEqual(array.pop, arrayProto.pop);
   });
 
-  it('should work with `arguments` objects as secondary arguments', function() {
-    var object = lodashStable.cloneDeep(source);
+  it('should work with `arguments` objects as secondary arguments', () => {
+    const object = lodashStable.cloneDeep(source);
     bindAll(object, args);
 
-    var actual = lodashStable.map(args, function(key) {
-      return object[key].call({});
-    });
+    const actual = lodashStable.map(args, (key) => object[key].call({}));
 
     assert.deepStrictEqual(actual, [1]);
   });

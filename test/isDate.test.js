@@ -3,17 +3,15 @@ import lodashStable from 'lodash';
 import { falsey, stubFalse, args, slice, symbol, realm } from './utils.js';
 import isDate from '../isDate.js';
 
-describe('isDate', function() {
-  it('should return `true` for dates', function() {
+describe('isDate', () => {
+  it('should return `true` for dates', () => {
     assert.strictEqual(isDate(new Date), true);
   });
 
-  it('should return `false` for non-dates', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-dates', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isDate(value) : isDate();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isDate(value) : isDate());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -30,7 +28,7 @@ describe('isDate', function() {
     assert.strictEqual(isDate(symbol), false);
   });
 
-  it('should work with a date object from another realm', function() {
+  it('should work with a date object from another realm', () => {
     if (realm.date) {
       assert.strictEqual(isDate(realm.date), true);
     }

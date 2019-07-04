@@ -1,11 +1,11 @@
 import assert from 'assert';
 
-describe('tap', function() {
-  it('should intercept and return the given value', function() {
-    var intercepted,
-        array = [1, 2, 3];
+describe('tap', () => {
+  it('should intercept and return the given value', () => {
+    let intercepted,
+      array = [1, 2, 3];
 
-    var actual = _.tap(array, function(value) {
+    const actual = _.tap(array, (value) => {
       intercepted = value;
     });
 
@@ -13,11 +13,11 @@ describe('tap', function() {
     assert.strictEqual(intercepted, array);
   });
 
-  it('should intercept unwrapped values and return wrapped values when chaining', function() {
-    var intercepted,
-        array = [1, 2, 3];
+  it('should intercept unwrapped values and return wrapped values when chaining', () => {
+    let intercepted,
+      array = [1, 2, 3];
 
-    var wrapped = _(array).tap(function(value) {
+    const wrapped = _(array).tap((value) => {
       intercepted = value;
       value.pop();
     });

@@ -3,19 +3,17 @@ import lodashStable from 'lodash';
 import { set, falsey, stubFalse, args, slice, symbol, weakSet, realm } from './utils.js';
 import isSet from '../isSet.js';
 
-describe('isSet', function() {
-  it('should return `true` for sets', function() {
+describe('isSet', () => {
+  it('should return `true` for sets', () => {
     if (Set) {
       assert.strictEqual(isSet(set), true);
     }
   });
 
-  it('should return `false` for non-sets', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-sets', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isSet(value) : isSet();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isSet(value) : isSet());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -34,18 +32,16 @@ describe('isSet', function() {
     assert.strictEqual(isSet(weakSet), false);
   });
 
-  it('should work for objects with a non-function `constructor` (test in IE 11)', function() {
-    var values = [false, true],
-        expected = lodashStable.map(values, stubFalse);
+  it('should work for objects with a non-function `constructor` (test in IE 11)', () => {
+    let values = [false, true],
+      expected = lodashStable.map(values, stubFalse);
 
-    var actual = lodashStable.map(values, function(value) {
-      return isSet({ 'constructor': value });
-    });
+    const actual = lodashStable.map(values, (value) => isSet({ 'constructor': value }));
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should work with weak sets from another realm', function() {
+  it('should work with weak sets from another realm', () => {
     if (realm.set) {
       assert.strictEqual(isSet(realm.set), true);
     }

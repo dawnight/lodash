@@ -1,8 +1,8 @@
-import baseAssignValue from './baseAssignValue.js'
-import eq from '../eq.js'
+import baseAssignValue from './baseAssignValue.js';
+import eq from '../eq.js';
 
 /** Used to check objects for own properties. */
-const hasOwnProperty = Object.prototype.hasOwnProperty
+const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 /**
  * Assigns `value` to `key` of `object` if the existing value is not equivalent.
@@ -13,15 +13,15 @@ const hasOwnProperty = Object.prototype.hasOwnProperty
  * @param {*} value The value to assign.
  */
 function assignValue(object, key, value) {
-  const objValue = object[key]
+  const objValue = object[key];
 
   if (!(hasOwnProperty.call(object, key) && eq(objValue, value))) {
     if (value !== 0 || (1 / value) == (1 / objValue)) {
-      baseAssignValue(object, key, value)
+      baseAssignValue(object, key, value);
     }
   } else if (value === undefined && !(key in object)) {
-    baseAssignValue(object, key, value)
+    baseAssignValue(object, key, value);
   }
 }
 
-export default assignValue
+export default assignValue;

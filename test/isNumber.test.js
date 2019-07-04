@@ -3,21 +3,17 @@ import lodashStable from 'lodash';
 import { falsey, args, slice, symbol, realm } from './utils.js';
 import isNumber from '../isNumber.js';
 
-describe('isNumber', function() {
-  it('should return `true` for numbers', function() {
+describe('isNumber', () => {
+  it('should return `true` for numbers', () => {
     assert.strictEqual(isNumber(0), true);
     assert.strictEqual(isNumber(Object(0)), true);
     assert.strictEqual(isNumber(NaN), true);
   });
 
-  it('should return `false` for non-numbers', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return typeof value == 'number';
-    });
+  it('should return `false` for non-numbers', () => {
+    const expected = lodashStable.map(falsey, (value) => typeof value == 'number');
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isNumber(value) : isNumber();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isNumber(value) : isNumber());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -34,7 +30,7 @@ describe('isNumber', function() {
     assert.strictEqual(isNumber(symbol), false);
   });
 
-  it('should work with numbers from another realm', function() {
+  it('should work with numbers from another realm', () => {
     if (realm.number) {
       assert.strictEqual(isNumber(realm.number), true);
     }

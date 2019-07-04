@@ -3,19 +3,17 @@ import lodashStable from 'lodash';
 import { arrayBuffer, falsey, stubFalse, args, slice, symbol, realm } from './utils.js';
 import isArrayBuffer from '../isArrayBuffer.js';
 
-describe('isArrayBuffer', function() {
-  it('should return `true` for array buffers', function() {
+describe('isArrayBuffer', () => {
+  it('should return `true` for array buffers', () => {
     if (ArrayBuffer) {
       assert.strictEqual(isArrayBuffer(arrayBuffer), true);
     }
   });
 
-  it('should return `false` for non array buffers', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non array buffers', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isArrayBuffer(value) : isArrayBuffer();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isArrayBuffer(value) : isArrayBuffer());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -33,7 +31,7 @@ describe('isArrayBuffer', function() {
     assert.strictEqual(isArrayBuffer(symbol), false);
   });
 
-  it('should work with array buffers from another realm', function() {
+  it('should work with array buffers from another realm', () => {
     if (realm.arrayBuffer) {
       assert.strictEqual(isArrayBuffer(realm.arrayBuffer), true);
     }

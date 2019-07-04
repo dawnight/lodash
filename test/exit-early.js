@@ -2,16 +2,16 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _ } from './utils.js';
 
-describe('exit early', function() {
-  lodashStable.each(['_baseEach', 'forEach', 'forEachRight', 'forIn', 'forInRight', 'forOwn', 'forOwnRight', 'transform'], function(methodName) {
-    var func = _[methodName];
+describe('exit early', () => {
+  lodashStable.each(['_baseEach', 'forEach', 'forEachRight', 'forIn', 'forInRight', 'forOwn', 'forOwnRight', 'transform'], (methodName) => {
+    const func = _[methodName];
 
-    it('`_.' + methodName + '` can exit early when iterating arrays', function() {
+    it(`\`_.${methodName}\` can exit early when iterating arrays`, () => {
       if (func) {
-        var array = [1, 2, 3],
-            values = [];
+        let array = [1, 2, 3],
+          values = [];
 
-        func(array, function(value, other) {
+        func(array, (value, other) => {
           values.push(lodashStable.isArray(value) ? other : value);
           return false;
         });
@@ -20,12 +20,12 @@ describe('exit early', function() {
       }
     });
 
-    it('`_.' + methodName + '` can exit early when iterating objects', function() {
+    it(`\`_.${methodName}\` can exit early when iterating objects`, () => {
       if (func) {
-        var object = { 'a': 1, 'b': 2, 'c': 3 },
-            values = [];
+        let object = { 'a': 1, 'b': 2, 'c': 3 },
+          values = [];
 
-        func(object, function(value, other) {
+        func(object, (value, other) => {
           values.push(lodashStable.isArray(value) ? other : value);
           return false;
         });

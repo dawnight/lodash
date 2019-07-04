@@ -10,32 +10,28 @@ import {
   args,
   slice,
   symbol,
-  realm,
+  realm
 } from './utils.js';
 
 import isError from '../isError.js';
 
-describe('isError', function() {
-  it('should return `true` for error objects', function() {
-    var expected = lodashStable.map(errors, stubTrue);
+describe('isError', () => {
+  it('should return `true` for error objects', () => {
+    const expected = lodashStable.map(errors, stubTrue);
 
-    var actual = lodashStable.map(errors, function(error) {
-      return isError(error) === true;
-    });
+    const actual = lodashStable.map(errors, (error) => isError(error) === true);
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return `true` for subclassed values', function() {
+  it('should return `true` for subclassed values', () => {
     assert.strictEqual(isError(new CustomError('x')), true);
   });
 
-  it('should return `false` for non error objects', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non error objects', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isError(value) : isError();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isError(value) : isError());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -52,17 +48,15 @@ describe('isError', function() {
     assert.strictEqual(isError(symbol), false);
   });
 
-  it('should return `false` for plain objects', function() {
+  it('should return `false` for plain objects', () => {
     assert.strictEqual(isError({ 'name': 'Error', 'message': '' }), false);
   });
 
-  it('should work with an error object from another realm', function() {
+  it('should work with an error object from another realm', () => {
     if (realm.errors) {
-      var expected = lodashStable.map(realm.errors, stubTrue);
+      const expected = lodashStable.map(realm.errors, stubTrue);
 
-      var actual = lodashStable.map(realm.errors, function(error) {
-        return isError(error) === true;
-      });
+      const actual = lodashStable.map(realm.errors, (error) => isError(error) === true);
 
       assert.deepStrictEqual(actual, expected);
     }

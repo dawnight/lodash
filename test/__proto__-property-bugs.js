@@ -8,15 +8,13 @@ import without from '../without.js';
 import groupBy from '../groupBy.js';
 import merge from '../merge.js';
 
-describe('`__proto__` property bugs', function() {
-  it('should work with the "__proto__" key in internal data objects', function() {
-    var stringLiteral = '__proto__',
-        stringObject = Object(stringLiteral),
-        expected = [stringLiteral, stringObject];
+describe('`__proto__` property bugs', () => {
+  it('should work with the "__proto__" key in internal data objects', () => {
+    let stringLiteral = '__proto__',
+      stringObject = Object(stringLiteral),
+      expected = [stringLiteral, stringObject];
 
-    var largeArray = lodashStable.times(LARGE_ARRAY_SIZE, function(count) {
-      return isEven(count) ? stringLiteral : stringObject;
-    });
+    const largeArray = lodashStable.times(LARGE_ARRAY_SIZE, (count) => isEven(count) ? stringLiteral : stringObject);
 
     assert.deepStrictEqual(difference(largeArray, largeArray), []);
     assert.deepStrictEqual(intersection(largeArray, largeArray), expected);
@@ -24,8 +22,8 @@ describe('`__proto__` property bugs', function() {
     assert.deepStrictEqual(without.apply(_, [largeArray].concat(largeArray)), []);
   });
 
-  it('should treat "__proto__" as a regular key in assignments', function() {
-    var methods = [
+  it('should treat "__proto__" as a regular key in assignments', () => {
+    const methods = [
       'assign',
       'assignIn',
       'defaults',
@@ -33,13 +31,13 @@ describe('`__proto__` property bugs', function() {
       'merge'
     ];
 
-    var source = create(null);
+    const source = create(null);
     source.__proto__ = [];
 
-    var expected = lodashStable.map(methods, stubFalse);
+    const expected = lodashStable.map(methods, stubFalse);
 
-    var actual = lodashStable.map(methods, function(methodName) {
-      var result = _[methodName]({}, source);
+    let actual = lodashStable.map(methods, (methodName) => {
+      const result = _[methodName]({}, source);
       return result instanceof Array;
     });
 
@@ -49,21 +47,21 @@ describe('`__proto__` property bugs', function() {
     assert.ok(!(actual instanceof Array));
   });
 
-  it('should not merge "__proto__" properties', function() {
+  it('should not merge "__proto__" properties', () => {
     if (JSON) {
       merge({}, JSON.parse('{"__proto__":{"a":1}}'));
 
-      var actual = 'a' in objectProto;
+      const actual = 'a' in objectProto;
       delete objectProto.a;
 
       assert.ok(!actual);
     }
   });
 
-  it('should not indirectly merge builtin prototype properties', function() {
+  it('should not indirectly merge builtin prototype properties', () => {
     merge({}, { 'toString': { 'constructor': { 'prototype': { 'a': 1 } } } });
 
-    var actual = 'a' in funcProto;
+    let actual = 'a' in funcProto;
     delete funcProto.a;
 
     assert.ok(!actual);
@@ -76,10 +74,10 @@ describe('`__proto__` property bugs', function() {
     assert.ok(!actual);
   });
 
-  it('should not indirectly merge `Object` properties', function() {
+  it('should not indirectly merge `Object` properties', () => {
     merge({}, { 'constructor': { 'a': 1 } });
 
-    var actual = 'a' in Object;
+    const actual = 'a' in Object;
     delete Object.a;
 
     assert.ok(!actual);

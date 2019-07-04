@@ -3,14 +3,14 @@ import lodashStable from 'lodash';
 import { document, body, falsey, stubFalse, args, slice, symbol, realm } from './utils.js';
 import isElement from '../isElement.js';
 
-describe('isElement', function() {
-  it('should return `true` for elements', function() {
+describe('isElement', () => {
+  it('should return `true` for elements', () => {
     if (document) {
       assert.strictEqual(isElement(body), true);
     }
   });
 
-  it('should return `true` for non-plain objects', function() {
+  it('should return `true` for non-plain objects', () => {
     function Foo() {
       this.nodeType = 1;
     }
@@ -18,12 +18,10 @@ describe('isElement', function() {
     assert.strictEqual(isElement(new Foo), true);
   });
 
-  it('should return `false` for non DOM elements', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non DOM elements', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isElement(value) : isElement();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isElement(value) : isElement());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -41,7 +39,7 @@ describe('isElement', function() {
     assert.strictEqual(isElement(symbol), false);
   });
 
-  it('should return `false` for plain objects', function() {
+  it('should return `false` for plain objects', () => {
     assert.strictEqual(isElement({ 'nodeType': 1 }), false);
     assert.strictEqual(isElement({ 'nodeType': Object(1) }), false);
     assert.strictEqual(isElement({ 'nodeType': true }), false);
@@ -50,7 +48,7 @@ describe('isElement', function() {
     assert.strictEqual(isElement({ 'nodeType': '001' }), false);
   });
 
-  it('should work with a DOM element from another realm', function() {
+  it('should work with a DOM element from another realm', () => {
     if (realm.element) {
       assert.strictEqual(isElement(realm.element), true);
     }

@@ -3,53 +3,49 @@ import lodashStable from 'lodash';
 import { falsey, LARGE_ARRAY_SIZE, isEven } from './utils.js';
 import drop from '../drop.js';
 
-describe('drop', function() {
-  var array = [1, 2, 3];
+describe('drop', () => {
+  const array = [1, 2, 3];
 
-  it('should drop the first two elements', function() {
+  it('should drop the first two elements', () => {
     assert.deepStrictEqual(drop(array, 2), [3]);
   });
 
-  it('should treat falsey `n` values, except `undefined`, as `0`', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value === undefined ? [2, 3] : array;
-    });
+  it('should treat falsey `n` values, except `undefined`, as `0`', () => {
+    const expected = lodashStable.map(falsey, (value) => value === undefined ? [2, 3] : array);
 
-    var actual = lodashStable.map(falsey, function(n) {
-      return drop(array, n);
-    });
+    const actual = lodashStable.map(falsey, (n) => drop(array, n));
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return all elements when `n` < `1`', function() {
-    lodashStable.each([0, -1, -Infinity], function(n) {
+  it('should return all elements when `n` < `1`', () => {
+    lodashStable.each([0, -1, -Infinity], (n) => {
       assert.deepStrictEqual(drop(array, n), array);
     });
   });
 
-  it('should return an empty array when `n` >= `length`', function() {
-    lodashStable.each([3, 4, Math.pow(2, 32), Infinity], function(n) {
+  it('should return an empty array when `n` >= `length`', () => {
+    lodashStable.each([3, 4, Math.pow(2, 32), Infinity], (n) => {
       assert.deepStrictEqual(drop(array, n), []);
     });
   });
 
-  it('should coerce `n` to an integer', function() {
+  it('should coerce `n` to an integer', () => {
     assert.deepStrictEqual(drop(array, 1.6), [2, 3]);
   });
 
-  it('should work as an iteratee for methods like `_.map`', function() {
-    var array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-        actual = lodashStable.map(array, drop);
+  it('should work as an iteratee for methods like `_.map`', () => {
+    let array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+      actual = lodashStable.map(array, drop);
 
     assert.deepStrictEqual(actual, [[2, 3], [5, 6], [8, 9]]);
   });
 
-  it('should work in a lazy sequence', function() {
+  it('should work in a lazy sequence', () => {
     var array = lodashStable.range(1, LARGE_ARRAY_SIZE + 1),
-        predicate = function(value) { values.push(value); return isEven(value); },
-        values = [],
-        actual = _(array).drop(2).drop().value();
+      predicate = function(value) { values.push(value); return isEven(value); },
+      values = [],
+      actual = _(array).drop(2).drop().value();
 
     assert.deepEqual(actual, array.slice(3));
 

@@ -1,5 +1,5 @@
-import isArrayLike from '../isArrayLike.js'
-import isIndex from './isIndex.js'
+import isArrayLike from '../isArrayLike.js';
+import isIndex from './isIndex.js';
 
 /**
  * Checks if the given arguments are from an iteratee call.
@@ -26,4 +26,4 @@ function isIterateeCall(value, index, object) {
   return false;
 }
 
-export default isIterateeCall
+export default isIterateeCall;

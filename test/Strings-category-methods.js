@@ -2,8 +2,8 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _, stubString } from './utils.js';
 
-describe('"Strings" category methods', function() {
-  var stringMethods = [
+describe('"Strings" category methods', () => {
+  const stringMethods = [
     'camelCase',
     'capitalize',
     'escape',
@@ -26,16 +26,14 @@ describe('"Strings" category methods', function() {
     'upperFirst'
   ];
 
-  lodashStable.each(stringMethods, function(methodName) {
-    var func = _[methodName];
+  lodashStable.each(stringMethods, (methodName) => {
+    const func = _[methodName];
 
-    it('`_.' + methodName + '` should return an empty string for empty values', function() {
-      var values = [, null, undefined, ''],
-          expected = lodashStable.map(values, stubString);
+    it(`\`_.${methodName}\` should return an empty string for empty values`, () => {
+      let values = [, null, undefined, ''],
+        expected = lodashStable.map(values, stubString);
 
-      var actual = lodashStable.map(values, function(value, index) {
-        return index ? func(value) : func();
-      });
+      const actual = lodashStable.map(values, (value, index) => index ? func(value) : func());
 
       assert.deepStrictEqual(actual, expected);
     });

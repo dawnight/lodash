@@ -3,19 +3,17 @@ import lodashStable from 'lodash';
 import { falsey, stubFalse, args, slice, symbol, isStrict, lodashBizarro } from './utils.js';
 import isBuffer from '../isBuffer.js';
 
-describe('isBuffer', function() {
-  it('should return `true` for buffers', function() {
+describe('isBuffer', () => {
+  it('should return `true` for buffers', () => {
     if (Buffer) {
       assert.strictEqual(isBuffer(new Buffer(2)), true);
     }
   });
 
-  it('should return `false` for non-buffers', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-buffers', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isBuffer(value) : isBuffer();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isBuffer(value) : isBuffer());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -33,7 +31,7 @@ describe('isBuffer', function() {
     assert.strictEqual(isBuffer(symbol), false);
   });
 
-  it('should return `false` if `Buffer` is not defined', function() {
+  it('should return `false` if `Buffer` is not defined', () => {
     if (!isStrict && Buffer && lodashBizarro) {
       assert.strictEqual(lodashBizarro.isBuffer(new Buffer(2)), false);
     }

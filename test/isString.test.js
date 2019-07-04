@@ -3,20 +3,16 @@ import lodashStable from 'lodash';
 import { falsey, args, slice, symbol, realm } from './utils.js';
 import isString from '../isString.js';
 
-describe('isString', function() {
-  it('should return `true` for strings', function() {
+describe('isString', () => {
+  it('should return `true` for strings', () => {
     assert.strictEqual(isString('a'), true);
     assert.strictEqual(isString(Object('a')), true);
   });
 
-  it('should return `false` for non-strings', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value === '';
-    });
+  it('should return `false` for non-strings', () => {
+    const expected = lodashStable.map(falsey, (value) => value === '');
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isString(value) : isString();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isString(value) : isString());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -33,7 +29,7 @@ describe('isString', function() {
     assert.strictEqual(isString(symbol), false);
   });
 
-  it('should work with strings from another realm', function() {
+  it('should work with strings from another realm', () => {
     if (realm.string) {
       assert.strictEqual(isString(realm.string), true);
     }

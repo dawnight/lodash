@@ -30,14 +30,14 @@ import without from '../without.js';
 import zip from '../zip.js';
 import xor from '../xor.js';
 
-describe('"Arrays" category methods', function() {
-  var args = toArgs([1, null, [3], null, 5]),
-      sortedArgs = toArgs([1, [3], 5, null, null]),
-      array = [1, 2, 3, 4, 5, 6];
+describe('"Arrays" category methods', () => {
+  let args = toArgs([1, null, [3], null, 5]),
+    sortedArgs = toArgs([1, [3], 5, null, null]),
+    array = [1, 2, 3, 4, 5, 6];
 
-  it('should work with `arguments` objects', function() {
+  it('should work with `arguments` objects', () => {
     function message(methodName) {
-      return '`_.' + methodName + '` should work with `arguments` objects';
+      return `\`_.${methodName}\` should work with \`arguments\` objects`;
     }
 
     assert.deepStrictEqual(difference(args, [null]), [1, [3], 5], message('difference'));
@@ -74,9 +74,9 @@ describe('"Arrays" category methods', function() {
     assert.deepStrictEqual(zip(args, args), [[1, 1], [null, null], [[3], [3]], [null, null], [5, 5]], message('zip'));
   });
 
-  it('should accept falsey primary arguments', function() {
+  it('should accept falsey primary arguments', () => {
     function message(methodName) {
-      return '`_.' + methodName + '` should accept falsey primary arguments';
+      return `\`_.${methodName}\` should accept falsey primary arguments`;
     }
 
     assert.deepStrictEqual(difference(null, array), [], message('difference'));
@@ -85,9 +85,9 @@ describe('"Arrays" category methods', function() {
     assert.deepStrictEqual(xor(null, array), array, message('xor'));
   });
 
-  it('should accept falsey secondary arguments', function() {
+  it('should accept falsey secondary arguments', () => {
     function message(methodName) {
-      return '`_.' + methodName + '` should accept falsey secondary arguments';
+      return `\`_.${methodName}\` should accept falsey secondary arguments`;
     }
 
     assert.deepStrictEqual(difference(array, null), array, message('difference'));

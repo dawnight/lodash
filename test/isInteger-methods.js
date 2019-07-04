@@ -2,42 +2,34 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _, stubTrue, MAX_INTEGER, stubFalse, falsey, args, symbol } from './utils.js';
 
-describe('isInteger methods', function() {
-  lodashStable.each(['isInteger', 'isSafeInteger'], function(methodName) {
-    var func = _[methodName],
-        isSafe = methodName == 'isSafeInteger';
+describe('isInteger methods', () => {
+  lodashStable.each(['isInteger', 'isSafeInteger'], (methodName) => {
+    let func = _[methodName],
+      isSafe = methodName == 'isSafeInteger';
 
-    it('`_.' + methodName + '` should return `true` for integer values', function() {
-      var values = [-1, 0, 1],
-          expected = lodashStable.map(values, stubTrue);
+    it(`\`_.${methodName}\` should return \`true\` for integer values`, () => {
+      let values = [-1, 0, 1],
+        expected = lodashStable.map(values, stubTrue);
 
-      var actual = lodashStable.map(values, function(value) {
-        return func(value);
-      });
+      const actual = lodashStable.map(values, (value) => func(value));
 
       assert.deepStrictEqual(actual, expected);
       assert.strictEqual(func(MAX_INTEGER), !isSafe);
     });
 
-    it('should return `false` for non-integer number values', function() {
-      var values = [NaN, Infinity, -Infinity, Object(1), 3.14],
-          expected = lodashStable.map(values, stubFalse);
+    it('should return `false` for non-integer number values', () => {
+      let values = [NaN, Infinity, -Infinity, Object(1), 3.14],
+        expected = lodashStable.map(values, stubFalse);
 
-      var actual = lodashStable.map(values, function(value) {
-        return func(value);
-      });
+      const actual = lodashStable.map(values, (value) => func(value));
 
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('should return `false` for non-numeric values', function() {
-      var expected = lodashStable.map(falsey, function(value) {
-        return value === 0;
-      });
+    it('should return `false` for non-numeric values', () => {
+      const expected = lodashStable.map(falsey, (value) => value === 0);
 
-      var actual = lodashStable.map(falsey, function(value, index) {
-        return index ? func(value) : func();
-      });
+      const actual = lodashStable.map(falsey, (value, index) => index ? func(value) : func());
 
       assert.deepStrictEqual(actual, expected);
 

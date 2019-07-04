@@ -1,111 +1,111 @@
 /** Used to detect when a function becomes hot. */
-var HOT_COUNT = 150;
+const HOT_COUNT = 150;
 
 /** Used as the size to cover large array optimizations. */
-var LARGE_ARRAY_SIZE = 200;
+const LARGE_ARRAY_SIZE = 200;
 
 /** Used as the `TypeError` message for "Functions" methods. */
-var FUNC_ERROR_TEXT = 'Expected a function';
+const FUNC_ERROR_TEXT = 'Expected a function';
 
 /** Used as the maximum memoize cache size. */
-var MAX_MEMOIZE_SIZE = 500;
+const MAX_MEMOIZE_SIZE = 500;
 
 /** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991,
-    MAX_INTEGER = 1.7976931348623157e+308;
+let MAX_SAFE_INTEGER = 9007199254740991,
+  MAX_INTEGER = 1.7976931348623157e+308;
 
 /** Used as references for the maximum length and index of an array. */
-var MAX_ARRAY_LENGTH = 4294967295,
-    MAX_ARRAY_INDEX = MAX_ARRAY_LENGTH - 1;
+let MAX_ARRAY_LENGTH = 4294967295,
+  MAX_ARRAY_INDEX = MAX_ARRAY_LENGTH - 1;
 
 /** `Object#toString` result references. */
-var funcTag = '[object Function]',
-    numberTag = '[object Number]',
-    objectTag = '[object Object]';
+let funcTag = '[object Function]',
+  numberTag = '[object Number]',
+  objectTag = '[object Object]';
 
 /** Used as a reference to the global object. */
-var root = (typeof global == 'object' && global) || this;
+const root = (typeof global == 'object' && global) || this;
 
 /** Used to store lodash to test for bad extensions/shims. */
-var lodashBizarro = root.lodashBizarro;
+let lodashBizarro = root.lodashBizarro;
 
 /** Used for native method references. */
-var arrayProto = Array.prototype,
-    funcProto = Function.prototype,
-    objectProto = Object.prototype,
-    numberProto = Number.prototype,
-    stringProto = String.prototype;
+let arrayProto = Array.prototype,
+  funcProto = Function.prototype,
+  objectProto = Object.prototype,
+  numberProto = Number.prototype,
+  stringProto = String.prototype;
 
 /** Method and object shortcuts. */
-var phantom = root.phantom,
-    process = root.process,
-    amd = root.define ? define.amd : undefined,
-    args = toArgs([1, 2, 3]),
-    argv = process ? process.argv : undefined,
-    defineProperty = Object.defineProperty,
-    document = phantom ? undefined : root.document,
-    body = root.document ? root.document.body : undefined,
-    create = Object.create,
-    fnToString = funcProto.toString,
-    freeze = Object.freeze,
-    getSymbols = Object.getOwnPropertySymbols,
-    identity = function(value) { return value; },
-    noop = function() {},
-    objToString = objectProto.toString,
-    params = argv,
-    push = arrayProto.push,
-    realm = {},
-    slice = arrayProto.slice,
-    strictArgs = (function() { 'use strict'; return arguments; }(1, 2, 3));
+let phantom = root.phantom,
+  process = root.process,
+  amd = root.define ? define.amd : undefined,
+  args = toArgs([1, 2, 3]),
+  argv = process ? process.argv : undefined,
+  defineProperty = Object.defineProperty,
+  document = phantom ? undefined : root.document,
+  body = root.document ? root.document.body : undefined,
+  create = Object.create,
+  fnToString = funcProto.toString,
+  freeze = Object.freeze,
+  getSymbols = Object.getOwnPropertySymbols,
+  identity = function(value) { return value; },
+  noop = function() {},
+  objToString = objectProto.toString,
+  params = argv,
+  push = arrayProto.push,
+  realm = {},
+  slice = arrayProto.slice,
+  strictArgs = (function() { 'use strict'; return arguments; }(1, 2, 3));
 
-var ArrayBuffer = root.ArrayBuffer,
-    Buffer = root.Buffer,
-    Map = root.Map,
-    Promise = root.Promise,
-    Proxy = root.Proxy,
-    Set = root.Set,
-    Symbol = root.Symbol,
-    Uint8Array = root.Uint8Array,
-    WeakMap = root.WeakMap,
-    WeakSet = root.WeakSet;
+let ArrayBuffer = root.ArrayBuffer,
+  Buffer = root.Buffer,
+  Map = root.Map,
+  Promise = root.Promise,
+  Proxy = root.Proxy,
+  Set = root.Set,
+  Symbol = root.Symbol,
+  Uint8Array = root.Uint8Array,
+  WeakMap = root.WeakMap,
+  WeakSet = root.WeakSet;
 
-var arrayBuffer = ArrayBuffer ? new ArrayBuffer(2) : undefined,
-    map = Map ? new Map : undefined,
-    promise = Promise ? Promise.resolve(1) : undefined,
-    set = Set ? new Set : undefined,
-    symbol = Symbol ? Symbol('a') : undefined,
-    weakMap = WeakMap ? new WeakMap : undefined,
-    weakSet = WeakSet ? new WeakSet : undefined;
+let arrayBuffer = ArrayBuffer ? new ArrayBuffer(2) : undefined,
+  map = Map ? new Map : undefined,
+  promise = Promise ? Promise.resolve(1) : undefined,
+  set = Set ? new Set : undefined,
+  symbol = Symbol ? Symbol('a') : undefined,
+  weakMap = WeakMap ? new WeakMap : undefined,
+  weakSet = WeakSet ? new WeakSet : undefined;
 
 /** Math helpers. */
-var add = function(x, y) { return x + y; },
-    doubled = function(n) { return n * 2; },
-    isEven = function(n) { return n % 2 == 0; },
-    square = function(n) { return n * n; };
+let add = function(x, y) { return x + y; },
+  doubled = function(n) { return n * 2; },
+  isEven = function(n) { return n % 2 == 0; },
+  square = function(n) { return n * n; };
 
 /** Stub functions. */
-var stubA = function() { return 'a'; },
-    stubB = function() { return 'b'; },
-    stubC = function() { return 'c'; };
+let stubA = function() { return 'a'; },
+  stubB = function() { return 'b'; },
+  stubC = function() { return 'c'; };
 
-var stubTrue = function() { return true; },
-    stubFalse = function() { return false; };
+let stubTrue = function() { return true; },
+  stubFalse = function() { return false; };
 
-var stubNaN = function() { return NaN; },
-    stubNull = function() { return null; };
+let stubNaN = function() { return NaN; },
+  stubNull = function() { return null; };
 
-var stubZero = function() { return 0; },
-    stubOne = function() { return 1; },
-    stubTwo = function() { return 2; },
-    stubThree = function() { return 3; },
-    stubFour = function() { return 4; };
+let stubZero = function() { return 0; },
+  stubOne = function() { return 1; },
+  stubTwo = function() { return 2; },
+  stubThree = function() { return 3; },
+  stubFour = function() { return 4; };
 
-var stubArray = function() { return []; },
-    stubObject = function() { return {}; },
-    stubString = function() { return ''; };
+let stubArray = function() { return []; },
+  stubObject = function() { return {}; },
+  stubString = function() { return ''; };
 
 /** List of Latin Unicode letters. */
-var burredLetters = [
+const burredLetters = [
   // Latin-1 Supplement letters.
   '\xc0', '\xc1', '\xc2', '\xc3', '\xc4', '\xc5', '\xc6', '\xc7', '\xc8', '\xc9', '\xca', '\xcb', '\xcc', '\xcd', '\xce', '\xcf',
   '\xd0', '\xd1', '\xd2', '\xd3', '\xd4', '\xd5', '\xd6',         '\xd8', '\xd9', '\xda', '\xdb', '\xdc', '\xdd', '\xde', '\xdf',
@@ -123,7 +123,7 @@ var burredLetters = [
 ];
 
 /** List of combining diacritical marks. */
-var comboMarks = [
+const comboMarks = [
   '\u0300', '\u0301', '\u0302', '\u0303', '\u0304', '\u0305', '\u0306', '\u0307', '\u0308', '\u0309', '\u030a', '\u030b', '\u030c', '\u030d', '\u030e', '\u030f',
   '\u0310', '\u0311', '\u0312', '\u0313', '\u0314', '\u0315', '\u0316', '\u0317', '\u0318', '\u0319', '\u031a', '\u031b', '\u031c', '\u031d', '\u031e', '\u031f',
   '\u0320', '\u0321', '\u0322', '\u0323', '\u0324', '\u0325', '\u0326', '\u0327', '\u0328', '\u0329', '\u032a', '\u032b', '\u032c', '\u032d', '\u032e', '\u032f',
@@ -135,7 +135,7 @@ var comboMarks = [
 ];
 
 /** List of converted Latin Unicode letters. */
-var deburredLetters = [
+const deburredLetters = [
   // Converted Latin-1 Supplement letters.
   'A',  'A', 'A', 'A', 'A', 'A', 'Ae', 'C',  'E', 'E', 'E', 'E', 'I', 'I', 'I',
   'I',  'D', 'N', 'O', 'O', 'O', 'O',  'O',  'O', 'U', 'U', 'U', 'U', 'Y', 'Th',
@@ -156,16 +156,16 @@ var deburredLetters = [
 ];
 
 /** Used to provide falsey values to methods. */
-var falsey = [, null, undefined, false, 0, NaN, ''];
+const falsey = [, null, undefined, false, 0, NaN, ''];
 
 /** Used to specify the emoji style glyph variant of characters. */
-var emojiVar = '\ufe0f';
+const emojiVar = '\ufe0f';
 
 /** Used to provide empty values to methods. */
-var empties = [[], {}].concat(falsey.slice(1));
+const empties = [[], {}].concat(falsey.slice(1));
 
 /** Used to test error objects. */
-var errors = [
+const errors = [
   new Error,
   new EvalError,
   new RangeError,
@@ -176,7 +176,7 @@ var errors = [
 ];
 
 /** List of fitzpatrick modifiers. */
-var fitzModifiers = [
+const fitzModifiers = [
   '\ud83c\udffb',
   '\ud83c\udffc',
   '\ud83c\udffd',
@@ -185,10 +185,10 @@ var fitzModifiers = [
 ];
 
 /** Used to provide primitive values to methods. */
-var primitives = [null, undefined, false, true, 1, NaN, 'a'];
+const primitives = [null, undefined, false, true, 1, NaN, 'a'];
 
 /** Used to check whether methods support typed arrays. */
-var typedArrays = [
+const typedArrays = [
   'Float32Array',
   'Float64Array',
   'Int8Array',
@@ -201,18 +201,18 @@ var typedArrays = [
 ];
 
 /** Used to check whether methods support array views. */
-var arrayViews = typedArrays.concat('DataView');
+const arrayViews = typedArrays.concat('DataView');
 
 /** The file path of the lodash file to test. */
-var filePath = (function() {
-  var min = 2,
-      result = params || [];
+const filePath = (function() {
+  let min = 2,
+    result = params || [];
 
   if (phantom) {
     min = 0;
     result = params = phantom.args || require('system').args;
   }
-  var last = result[result.length - 1];
+  const last = result[result.length - 1];
   result = (result.length > min && !/test(?:\.js)?$/.test(last)) ? last : '../node_modules/lodash/lodash.js';
 
   if (!amd) {
@@ -228,7 +228,7 @@ var filePath = (function() {
 }());
 
 /** The `ui` object. */
-var ui = root.ui || (root.ui = {
+const ui = root.ui || (root.ui = {
   'buildPath': filePath,
   'loaderPath': '',
   'isModularize': /\b(?:amd|commonjs|es|node|npm|(index|main)\.js)\b/.test(filePath),
@@ -237,19 +237,19 @@ var ui = root.ui || (root.ui = {
 });
 
 /** The basename of the lodash file to test. */
-var basename = /[\w.-]+$/.exec(filePath)[0];
+const basename = /[\w.-]+$/.exec(filePath)[0];
 
 /** Used to indicate testing a modularized build. */
-var isModularize = ui.isModularize;
+const isModularize = ui.isModularize;
 
 /** Detect if testing `npm` modules. */
-var isNpm = isModularize && /\bnpm\b/.test([ui.buildPath, ui.urlParams.build]);
+const isNpm = isModularize && /\bnpm\b/.test([ui.buildPath, ui.urlParams.build]);
 
 /** Detect if running in PhantomJS. */
-var isPhantom = phantom || (typeof callPhantom == 'function');
+const isPhantom = phantom || (typeof callPhantom == 'function');
 
 /** Detect if lodash is in strict mode. */
-var isStrict = ui.isStrict;
+const isStrict = ui.isStrict;
 
 /*--------------------------------------------------------------------------*/
 
@@ -262,7 +262,7 @@ setProperty(root, 'setTimeout', setTimeout);
 /*--------------------------------------------------------------------------*/
 
 /** Used to test Web Workers. */
-var Worker = !(ui.isForeign || ui.isSauceLabs || isModularize) &&
+const Worker = !(ui.isForeign || ui.isSauceLabs || isModularize) &&
   (document && document.origin != 'null') && root.Worker;
 
 /** Poison the free variable `root` in Node.js */
@@ -275,7 +275,7 @@ try {
 } catch (e) {}
 
 /** Load stable Lodash. */
-var lodashStable = root.lodashStable;
+let lodashStable = root.lodashStable;
 if (!lodashStable) {
   try {
     lodashStable = interopRequire('../node_modules/lodash/lodash.js');
@@ -286,17 +286,17 @@ if (!lodashStable) {
 }
 
 /** The `lodash` function to test. */
-var _ = root._ || (root._ = interopRequire(filePath));
+const _ = root._ || (root._ = interopRequire(filePath));
 
 /** Used to test pseudo private map caches. */
-var mapCaches = (function() {
-  var MapCache = _.memoize.Cache;
-  var result = {
+const mapCaches = (function() {
+  const MapCache = _.memoize.Cache;
+  const result = {
     'Hash': new MapCache().__data__.hash.constructor,
     'MapCache': MapCache
   };
   _.isMatchWith({ 'a': 1 }, { 'a': 1 }, function() {
-    var stack = lodashStable.last(arguments);
+    const stack = lodashStable.last(arguments);
     result.ListCache = stack.__data__.constructor;
     result.Stack = stack.constructor;
   });
@@ -304,28 +304,22 @@ var mapCaches = (function() {
 }());
 
 /** Used to detect instrumented istanbul code coverage runs. */
-var coverage = root.__coverage__ || root[lodashStable.find(lodashStable.keys(root), function(key) {
-  return /^(?:\$\$cov_\d+\$\$)$/.test(key);
-})];
+const coverage = root.__coverage__ || root[lodashStable.find(lodashStable.keys(root), (key) => /^(?:\$\$cov_\d+\$\$)$/.test(key))];
 
 /** Used to test async functions. */
-var asyncFunc = lodashStable.attempt(function() {
-  return Function('return async () => {}');
-});
+const asyncFunc = lodashStable.attempt(() => Function('return async () => {}'));
 
 /** Used to test generator functions. */
-var genFunc = lodashStable.attempt(function() {
-  return Function('return function*(){}');
-});
+const genFunc = lodashStable.attempt(() => Function('return function*(){}'));
 
 /** Used to restore the `_` reference. */
-var oldDash = root._;
+const oldDash = root._;
 
 /**
  * Used to check for problems removing whitespace. For a whitespace reference,
  * see [V8's unit test](https://code.google.com/p/v8/source/browse/branches/bleeding_edge/test/mjsunit/whitespaces.js).
  */
-var whitespace = lodashStable.filter([
+const whitespace = lodashStable.filter([
   // Basic whitespace characters.
   ' ', '\t', '\x0b', '\f', '\xa0', '\ufeff',
 
@@ -336,7 +330,7 @@ var whitespace = lodashStable.filter([
   '\u1680', '\u180e', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005',
   '\u2006', '\u2007', '\u2008', '\u2009', '\u200a', '\u202f', '\u205f', '\u3000'
 ],
-function(chr) { return /\s/.exec(chr); })
+(chr) => /\s/.exec(chr))
 .join('');
 
 /**
@@ -362,7 +356,7 @@ CustomError.prototype = lodashStable.create(Error.prototype, {
  * @param {Object} object The object to empty.
  */
 function emptyObject(object) {
-  lodashStable.forOwn(object, function(value, key, object) {
+  lodashStable.forOwn(object, (value, key, object) => {
     delete object[key];
   });
 }
@@ -375,14 +369,14 @@ function emptyObject(object) {
  * @returns {*} Returns the unwrapped value.
  */
 function getUnwrappedValue(wrapper) {
-  var index = -1,
-      actions = wrapper.__actions__,
-      length = actions.length,
-      result = wrapper.__wrapped__;
+  let index = -1,
+    actions = wrapper.__actions__,
+    length = actions.length,
+    result = wrapper.__wrapped__;
 
   while (++index < length) {
-    var args = [result],
-        action = actions[index];
+    let args = [result],
+      action = actions[index];
 
     push.apply(args, action.args);
     result = action.func.apply(action.thisArg, args);
@@ -399,7 +393,7 @@ function getUnwrappedValue(wrapper) {
  * @returns {*} Returns the resolved module.
  */
 function interopRequire(id) {
-  var result = require(id);
+  const result = require(id);
   return 'default' in result ? result['default'] : result;
 }
 
@@ -462,8 +456,8 @@ function toArgs(array) {
   if (document || (typeof require != 'function')) {
     return;
   }
-  var nativeString = fnToString.call(toString),
-      reToString = /toString/g;
+  let nativeString = fnToString.call(toString),
+    reToString = /toString/g;
 
   function createToString(funcName) {
     return lodashStable.constant(nativeString.replace(reToString, funcName));
@@ -472,7 +466,7 @@ function toArgs(array) {
   // Allow bypassing native checks.
   setProperty(funcProto, 'toString', function wrapper() {
     setProperty(funcProto, 'toString', fnToString);
-    var result = lodashStable.has(this, 'toString') ? this.toString() : fnToString.call(this);
+    const result = lodashStable.has(this, 'toString') ? this.toString() : fnToString.call(this);
     setProperty(funcProto, 'toString', wrapper);
     return result;
   });
@@ -484,7 +478,7 @@ function toArgs(array) {
   setProperty(Object, 'create', undefined);
   setProperty(Object, 'getOwnPropertySymbols', undefined);
 
-  var _propertyIsEnumerable = objectProto.propertyIsEnumerable;
+  const _propertyIsEnumerable = objectProto.propertyIsEnumerable;
   setProperty(objectProto, 'propertyIsEnumerable', function(key) {
     return !(key == 'valueOf' && this && this.valueOf === 1) && _propertyIsEnumerable.call(this, key);
   });
@@ -494,8 +488,8 @@ function toArgs(array) {
       'configurable': true,
       'enumerable': true,
       'get': function get() {
-        var caller = get.caller,
-            name = caller ? caller.name : '';
+        let caller = get.caller,
+          name = caller ? caller.name : '';
 
         if (!(name == 'runInContext' || name.length == 1 || /\b_\.isBuffer\b/.test(caller))) {
           return Buffer;
@@ -505,7 +499,7 @@ function toArgs(array) {
   }
   if (Map) {
     setProperty(root, 'Map', (function() {
-      var count = 0;
+      let count = 0;
       return function() {
         if (count++) {
           return new Map;
@@ -572,7 +566,7 @@ function toArgs(array) {
 }());
 
 // Add other realm values from the `vm` module.
-lodashStable.attempt(function() {
+lodashStable.attempt(() => {
   lodashStable.assign(realm, require('vm').runInNewContext([
     '(function() {',
     '  var noop = function() {},',
@@ -602,7 +596,7 @@ lodashStable.attempt(function() {
     "    'weakSet': root.WeakSet ? new root.WeakSet : undefined",
     '  };',
     '',
-    "  ['" + arrayViews.join("', '") + "'].forEach(function(type) {",
+    `  ['${arrayViews.join("', '")}'].forEach(function(type) {`,
     '    var Ctor = root[type]',
     '    object[type] = Ctor;',
     '    object[type.toLowerCase()] = Ctor ? new Ctor(new ArrayBuffer(24)) : undefined;',
@@ -614,10 +608,10 @@ lodashStable.attempt(function() {
 });
 
 // Add other realm values from an iframe.
-lodashStable.attempt(function() {
+lodashStable.attempt(() => {
   _._realm = realm;
 
-  var iframe = document.createElement('iframe');
+  const iframe = document.createElement('iframe');
   iframe.frameBorder = iframe.height = iframe.width = 0;
   body.appendChild(iframe);
 
@@ -655,7 +649,7 @@ lodashStable.attempt(function() {
     "  'weakSet': root.WeakSet ? new root.WeakSet : undefined",
     '};',
     '',
-    "_.each(['" + arrayViews.join("', '") + "'], function(type) {",
+    `_.each(['${arrayViews.join("', '")}'], function(type) {`,
     '  var Ctor = root[type];',
     '  object[type] = Ctor;',
     '  object[type.toLowerCase()] = Ctor ? new Ctor(new ArrayBuffer(24)) : undefined;',
@@ -672,9 +666,9 @@ lodashStable.attempt(function() {
 });
 
 // Add a web worker.
-lodashStable.attempt(function() {
-  var worker = new Worker('./asset/worker.js?t=' + (+new Date));
-  worker.addEventListener('message', function(e) {
+lodashStable.attempt(() => {
+  const worker = new Worker(`./asset/worker.js?t=${+new Date}`);
+  worker.addEventListener('message', (e) => {
     _._VERSION = e.data || '';
   }, false);
 
@@ -682,9 +676,9 @@ lodashStable.attempt(function() {
 });
 
 // Expose internal modules for better code coverage.
-lodashStable.attempt(function() {
-  var path = require('path'),
-      basePath = path.dirname(filePath);
+lodashStable.attempt(() => {
+  let path = require('path'),
+    basePath = path.dirname(filePath);
 
   if (isModularize && !(amd || isNpm)) {
     lodashStable.each([
@@ -692,8 +686,8 @@ lodashStable.attempt(function() {
       'isIndex',
       'isIterateeCall',
       'memoizeCapped'
-    ], function(funcName) {
-      _['_' + funcName] = interopRequire(path.join(basePath, '_' + funcName));
+    ], (funcName) => {
+      _[`_${funcName}`] = interopRequire(path.join(basePath, `_${funcName}`));
     });
   }
 });

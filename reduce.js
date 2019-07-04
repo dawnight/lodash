@@ -1,6 +1,6 @@
-import arrayReduce from './.internal/arrayReduce.js'
-import baseEach from './.internal/baseEach.js'
-import baseReduce from './.internal/baseReduce.js'
+import arrayReduce from './.internal/arrayReduce.js';
+import baseEach from './.internal/baseEach.js';
+import baseReduce from './.internal/baseReduce.js';
 
 /**
  * Reduces `collection` to a value which is the accumulated result of running
@@ -36,9 +36,9 @@ import baseReduce from './.internal/baseReduce.js'
  * // => { '1': ['a', 'c'], '2': ['b'] } (iteration order is not guaranteed)
  */
 function reduce(collection, iteratee, accumulator) {
-  const func = Array.isArray(collection) ? arrayReduce : baseReduce
-  const initAccum = arguments.length < 3
-  return func(collection, iteratee, accumulator, initAccum, baseEach)
+  const func = Array.isArray(collection) ? arrayReduce : baseReduce;
+  const initAccum = arguments.length < 3;
+  return func(collection, iteratee, accumulator, initAccum, baseEach);
 }
 
-export default reduce
+export default reduce;

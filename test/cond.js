@@ -2,9 +2,9 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _, stubA, stubB, stubC, slice, stubFalse, stubTrue } from './utils.js';
 
-describe('cond', function() {
-  it('should create a conditional function', function() {
-    var cond = _.cond([
+describe('cond', () => {
+  it('should create a conditional function', () => {
+    const cond = _.cond([
       [lodashStable.matches({ 'a': 1 }),     stubA],
       [lodashStable.matchesProperty('b', 1), stubB],
       [lodashStable.property('c'),           stubC]
@@ -15,12 +15,12 @@ describe('cond', function() {
     assert.strictEqual(cond({ 'a': -1, 'b': 0, 'c': 1 }), 'c');
   });
 
-  it('should provide arguments to functions', function() {
-    var args1,
-        args2,
-        expected = ['a', 'b', 'c'];
+  it('should provide arguments to functions', () => {
+    let args1,
+      args2,
+      expected = ['a', 'b', 'c'];
 
-    var cond = _.cond([[
+    const cond = _.cond([[
       function() { args1 || (args1 = slice.call(arguments)); return true; },
       function() { args2 || (args2 = slice.call(arguments)); }
     ]]);
@@ -31,8 +31,8 @@ describe('cond', function() {
     assert.deepStrictEqual(args2, expected);
   });
 
-  it('should work with predicate shorthands', function() {
-    var cond = _.cond([
+  it('should work with predicate shorthands', () => {
+    const cond = _.cond([
       [{ 'a': 1 }, stubA],
       [['b', 1],   stubB],
       ['c',        stubC]
@@ -43,23 +43,23 @@ describe('cond', function() {
     assert.strictEqual(cond({ 'a': -1, 'b': 0, 'c': 1 }), 'c');
   });
 
-  it('should return `undefined` when no condition is met', function() {
-    var cond = _.cond([[stubFalse, stubA]]);
+  it('should return `undefined` when no condition is met', () => {
+    const cond = _.cond([[stubFalse, stubA]]);
     assert.strictEqual(cond({ 'a': 1 }), undefined);
   });
 
-  it('should throw a TypeError if `pairs` is not composed of functions', function() {
-    lodashStable.each([false, true], function(value) {
-      assert.throws(function() { _.cond([[stubTrue, value]])(); }, TypeError);
+  it('should throw a TypeError if `pairs` is not composed of functions', () => {
+    lodashStable.each([false, true], (value) => {
+      assert.throws(() => { _.cond([[stubTrue, value]])(); }, TypeError);
     });
   });
 
-  it('should use `this` binding of function for `pairs`', function() {
-    var cond = _.cond([
+  it('should use `this` binding of function for `pairs`', () => {
+    const cond = _.cond([
       [function(a) { return this[a]; }, function(a, b) { return this[b]; }]
     ]);
 
-    var object = { 'cond': cond, 'a': 1, 'b': 2 };
+    const object = { 'cond': cond, 'a': 1, 'b': 2 };
     assert.strictEqual(object.cond('a', 'b'), 2);
   });
 });

@@ -1,6 +1,6 @@
-import baseEach from './baseEach.js'
-import baseSortBy from './baseSortBy.js'
-import compareMultiple from './compareMultiple.js'
+import baseEach from './baseEach.js';
+import baseSortBy from './baseSortBy.js';
+import compareMultiple from './compareMultiple.js';
 
 /**
  * The base implementation of `orderBy` without param guards.
@@ -12,18 +12,18 @@ import compareMultiple from './compareMultiple.js'
  * @returns {Array} Returns the new sorted array.
  */
 function baseOrderBy(collection, iteratees, orders) {
-  let criteriaIndex = -1
-  let eachIndex = -1
-  iteratees = iteratees.length ? iteratees : [(value) => value]
+  let criteriaIndex = -1;
+  let eachIndex = -1;
+  iteratees = iteratees.length ? iteratees : [(value) => value];
 
-  const result = isArrayLike(collection) ? new Array(collection.length) : []
+  const result = isArrayLike(collection) ? new Array(collection.length) : [];
 
   baseEach(collection, (value) => {
-    const criteria = iteratees.map((iteratee) => iteratee(value))
-    result[++eachIndex] = { 'criteria': criteria, 'index': ++criteriaIndex, 'value': value }
-  })
+    const criteria = iteratees.map((iteratee) => iteratee(value));
+    result[++eachIndex] = { 'criteria': criteria, 'index': ++criteriaIndex, 'value': value };
+  });
 
-  return baseSortBy(result, (object, other) => compareMultiple(object, other, orders))
+  return baseSortBy(result, (object, other) => compareMultiple(object, other, orders));
 }
 
-export default baseOrderBy
+export default baseOrderBy;

@@ -3,23 +3,19 @@ import lodashStable from 'lodash';
 import { args, stubTrue, falsey, asyncFunc, genFunc, slice, symbol, realm } from './utils.js';
 import isArrayLike from '../isArrayLike.js';
 
-describe('isArrayLike', function() {
-  it('should return `true` for array-like values', function() {
-    var values = [args, [1, 2, 3], { '0': 'a', 'length': 1 }, 'a'],
-        expected = lodashStable.map(values, stubTrue),
-        actual = lodashStable.map(values, isArrayLike);
+describe('isArrayLike', () => {
+  it('should return `true` for array-like values', () => {
+    let values = [args, [1, 2, 3], { '0': 'a', 'length': 1 }, 'a'],
+      expected = lodashStable.map(values, stubTrue),
+      actual = lodashStable.map(values, isArrayLike);
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return `false` for non-arrays', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value === '';
-    });
+  it('should return `false` for non-arrays', () => {
+    const expected = lodashStable.map(falsey, (value) => value === '');
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isArrayLike(value) : isArrayLike();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isArrayLike(value) : isArrayLike());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -36,11 +32,11 @@ describe('isArrayLike', function() {
     assert.strictEqual(isArrayLike(symbol), false);
   });
 
-  it('should work with an array from another realm', function() {
+  it('should work with an array from another realm', () => {
     if (realm.object) {
-      var values = [realm.arguments, realm.array, realm.string],
-          expected = lodashStable.map(values, stubTrue),
-          actual = lodashStable.map(values, isArrayLike);
+      let values = [realm.arguments, realm.array, realm.string],
+        expected = lodashStable.map(values, stubTrue),
+        actual = lodashStable.map(values, isArrayLike);
 
       assert.deepStrictEqual(actual, expected);
     }

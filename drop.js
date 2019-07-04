@@ -1,4 +1,4 @@
-import slice from './slice.js'
+import slice from './slice.js';
 
 /**
  * Creates a slice of `array` with `n` elements dropped from the beginning.
@@ -23,10 +23,10 @@ import slice from './slice.js'
  * // => [1, 2, 3]
  */
 function drop(array, n=1) {
-  const length = array == null ? 0 : array.length
+  const length = array == null ? 0 : array.length;
   return length
     ? slice(array, n < 0 ? 0 : n, length)
-    : []
+    : [];
 }
 
-export default drop
+export default drop;

@@ -3,20 +3,16 @@ import lodashStable from 'lodash';
 import { falsey, args, slice, symbol, realm } from './utils.js';
 import isUndefined from '../isUndefined.js';
 
-describe('isUndefined', function() {
-  it('should return `true` for `undefined` values', function() {
+describe('isUndefined', () => {
+  it('should return `true` for `undefined` values', () => {
     assert.strictEqual(isUndefined(), true);
     assert.strictEqual(isUndefined(undefined), true);
   });
 
-  it('should return `false` for non `undefined` values', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value === undefined;
-    });
+  it('should return `false` for non `undefined` values', () => {
+    const expected = lodashStable.map(falsey, (value) => value === undefined);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isUndefined(value) : isUndefined();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isUndefined(value) : isUndefined());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -37,7 +33,7 @@ describe('isUndefined', function() {
     }
   });
 
-  it('should work with `undefined` from another realm', function() {
+  it('should work with `undefined` from another realm', () => {
     if (realm.object) {
       assert.strictEqual(isUndefined(realm.undefined), true);
     }

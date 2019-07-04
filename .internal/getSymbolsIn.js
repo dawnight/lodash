@@ -1,4 +1,4 @@
-import getSymbols from './getSymbols.js'
+import getSymbols from './getSymbols.js';
 
 /**
  * Creates an array of the own and inherited enumerable symbols of `object`.
@@ -7,13 +7,13 @@ import getSymbols from './getSymbols.js'
  * @param {Object} object The object to query.
  * @returns {Array} Returns the array of symbols.
  */
-function getSymbolsIn (object) {
-  const result = []
+function getSymbolsIn(object) {
+  const result = [];
   while (object) {
-    result.push(...getSymbols(object))
-    object = Object.getPrototypeOf(Object(object))
+    result.push(...getSymbols(object));
+    object = Object.getPrototypeOf(Object(object));
   }
-  return result
+  return result;
 }
 
-export default getSymbolsIn
+export default getSymbolsIn;

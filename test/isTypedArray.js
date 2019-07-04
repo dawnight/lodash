@@ -3,26 +3,22 @@ import lodashStable from 'lodash';
 import { typedArrays, falsey, stubFalse, args, slice, symbol, realm } from './utils.js';
 import isTypedArray from '../isTypedArray.js';
 
-describe('isTypedArray', function() {
-  it('should return `true` for typed arrays', function() {
-    var expected = lodashStable.map(typedArrays, function(type) {
-      return type in root;
-    });
+describe('isTypedArray', () => {
+  it('should return `true` for typed arrays', () => {
+    const expected = lodashStable.map(typedArrays, (type) => type in root);
 
-    var actual = lodashStable.map(typedArrays, function(type) {
-      var Ctor = root[type];
+    const actual = lodashStable.map(typedArrays, (type) => {
+      const Ctor = root[type];
       return Ctor ? isTypedArray(new Ctor(new ArrayBuffer(8))) : false;
     });
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return `false` for non typed arrays', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non typed arrays', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isTypedArray(value) : isTypedArray();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isTypedArray(value) : isTypedArray());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -40,16 +36,14 @@ describe('isTypedArray', function() {
     assert.strictEqual(isTypedArray(symbol), false);
   });
 
-  it('should work with typed arrays from another realm', function() {
+  it('should work with typed arrays from another realm', () => {
     if (realm.object) {
-      var props = lodashStable.invokeMap(typedArrays, 'toLowerCase');
+      const props = lodashStable.invokeMap(typedArrays, 'toLowerCase');
 
-      var expected = lodashStable.map(props, function(key) {
-        return realm[key] !== undefined;
-      });
+      const expected = lodashStable.map(props, (key) => realm[key] !== undefined);
 
-      var actual = lodashStable.map(props, function(key) {
-        var value = realm[key];
+      const actual = lodashStable.map(props, (key) => {
+        const value = realm[key];
         return value ? isTypedArray(value) : false;
       });
 

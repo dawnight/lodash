@@ -3,18 +3,18 @@ import lodashStable from 'lodash';
 import { empties, noop } from './utils.js';
 import sample from '../sample.js';
 
-describe('sample', function() {
-  var array = [1, 2, 3];
+describe('sample', () => {
+  const array = [1, 2, 3];
 
-  it('should return a random element', function() {
-    var actual = sample(array);
+  it('should return a random element', () => {
+    const actual = sample(array);
     assert.ok(lodashStable.includes(array, actual));
   });
 
-  it('should return `undefined` when sampling empty collections', function() {
-    var expected = lodashStable.map(empties, noop);
+  it('should return `undefined` when sampling empty collections', () => {
+    const expected = lodashStable.map(empties, noop);
 
-    var actual = lodashStable.transform(empties, function(result, value) {
+    const actual = lodashStable.transform(empties, (result, value) => {
       try {
         result.push(sample(value));
       } catch (e) {}
@@ -23,9 +23,9 @@ describe('sample', function() {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should sample an object', function() {
-    var object = { 'a': 1, 'b': 2, 'c': 3 },
-        actual = sample(object);
+  it('should sample an object', () => {
+    let object = { 'a': 1, 'b': 2, 'c': 3 },
+      actual = sample(object);
 
     assert.ok(lodashStable.includes(array, actual));
   });

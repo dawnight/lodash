@@ -3,19 +3,15 @@ import lodashStable from 'lodash';
 import { falsey, args, slice, symbol, realm } from './utils.js';
 import isNull from '../isNull.js';
 
-describe('isNull', function() {
-  it('should return `true` for `null` values', function() {
+describe('isNull', () => {
+  it('should return `true` for `null` values', () => {
     assert.strictEqual(isNull(null), true);
   });
 
-  it('should return `false` for non `null` values', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value === null;
-    });
+  it('should return `false` for non `null` values', () => {
+    const expected = lodashStable.map(falsey, (value) => value === null);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isNull(value) : isNull();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isNull(value) : isNull());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -33,7 +29,7 @@ describe('isNull', function() {
     assert.strictEqual(isNull(symbol), false);
   });
 
-  it('should work with nulls from another realm', function() {
+  it('should work with nulls from another realm', () => {
     if (realm.object) {
       assert.strictEqual(isNull(realm.null), true);
     }

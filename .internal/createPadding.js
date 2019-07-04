@@ -1,9 +1,9 @@
-import repeat from '../repeat.js'
-import baseToString from './baseToString.js'
-import castSlice from './castSlice.js'
-import hasUnicode from './hasUnicode.js'
-import stringSize from './stringSize.js'
-import stringToArray from './stringToArray.js'
+import repeat from '../repeat.js';
+import baseToString from './baseToString.js';
+import castSlice from './castSlice.js';
+import hasUnicode from './hasUnicode.js';
+import stringSize from './stringSize.js';
+import stringToArray from './stringToArray.js';
 
 /**
  * Creates the padding for `string` based on `length`. The `chars` string
@@ -15,16 +15,16 @@ import stringToArray from './stringToArray.js'
  * @returns {string} Returns the padding for `string`.
  */
 function createPadding(length, chars) {
-  chars = chars === undefined ? ' ' : baseToString(chars)
+  chars = chars === undefined ? ' ' : baseToString(chars);
 
-  const charsLength = chars.length
+  const charsLength = chars.length;
   if (charsLength < 2) {
-    return charsLength ? repeat(chars, length) : chars
+    return charsLength ? repeat(chars, length) : chars;
   }
-  const result = repeat(chars, Math.ceil(length / stringSize(chars)))
+  const result = repeat(chars, Math.ceil(length / stringSize(chars)));
   return hasUnicode(chars)
     ? castSlice(stringToArray(result), 0, length).join('')
-    : result.slice(0, length)
+    : result.slice(0, length);
 }
 
-export default createPadding
+export default createPadding;

@@ -3,16 +3,16 @@ import lodashStable from 'lodash';
 import { falsey, noop } from './utils.js';
 import max from '../max.js';
 
-describe('max', function() {
-  it('should return the largest value from a collection', function() {
+describe('max', () => {
+  it('should return the largest value from a collection', () => {
     assert.strictEqual(max([1, 2, 3]), 3);
   });
 
-  it('should return `undefined` for empty collections', function() {
-    var values = falsey.concat([[]]),
-        expected = lodashStable.map(values, noop);
+  it('should return `undefined` for empty collections', () => {
+    let values = falsey.concat([[]]),
+      expected = lodashStable.map(values, noop);
 
-    var actual = lodashStable.map(values, function(value, index) {
+    const actual = lodashStable.map(values, (value, index) => {
       try {
         return index ? max(value) : max();
       } catch (e) {}
@@ -21,7 +21,7 @@ describe('max', function() {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should work with non-numeric collection values', function() {
+  it('should work with non-numeric collection values', () => {
     assert.strictEqual(max(['a', 'b']), 'b');
   });
 });

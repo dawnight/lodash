@@ -3,13 +3,13 @@ import lodashStable from 'lodash';
 import { falsey, stubArray, LARGE_ARRAY_SIZE } from './utils.js';
 import initial from '../initial.js';
 
-describe('initial', function() {
-  var array = [1, 2, 3];
+describe('initial', () => {
+  const array = [1, 2, 3];
 
-  it('should accept a falsey `array`', function() {
-    var expected = lodashStable.map(falsey, stubArray);
+  it('should accept a falsey `array`', () => {
+    const expected = lodashStable.map(falsey, stubArray);
 
-    var actual = lodashStable.map(falsey, function(array, index) {
+    const actual = lodashStable.map(falsey, (array, index) => {
       try {
         return index ? initial(array) : initial();
       } catch (e) {}
@@ -18,26 +18,26 @@ describe('initial', function() {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should exclude last element', function() {
+  it('should exclude last element', () => {
     assert.deepStrictEqual(initial(array), [1, 2]);
   });
 
-  it('should return an empty when querying empty arrays', function() {
+  it('should return an empty when querying empty arrays', () => {
     assert.deepStrictEqual(initial([]), []);
   });
 
-  it('should work as an iteratee for methods like `_.map`', function() {
-    var array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-        actual = lodashStable.map(array, initial);
+  it('should work as an iteratee for methods like `_.map`', () => {
+    let array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+      actual = lodashStable.map(array, initial);
 
     assert.deepStrictEqual(actual, [[1, 2], [4, 5], [7, 8]]);
   });
 
-  it('should work in a lazy sequence', function() {
-    var array = lodashStable.range(LARGE_ARRAY_SIZE),
-        values = [];
+  it('should work in a lazy sequence', () => {
+    let array = lodashStable.range(LARGE_ARRAY_SIZE),
+      values = [];
 
-    var actual = _(array).initial().filter(function(value) {
+    let actual = _(array).initial().filter((value) => {
       values.push(value);
       return false;
     })
@@ -48,7 +48,7 @@ describe('initial', function() {
 
     values = [];
 
-    actual = _(array).filter(function(value) {
+    actual = _(array).filter((value) => {
       values.push(value);
       return isEven(value);
     })

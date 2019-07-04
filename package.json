@@ -25,7 +25,8 @@
     "test:fp": "node test/test-fp",
     "test:wip": "mocha -r esm test/*.test.js",
     "test:main": "node test/test",
-    "validate": "npm run style && npm run test"
+    "validate": "npm run style && npm run test",
+    "lint:fix": "eslint --fix *.js ./.internal/*.js"
   },
   "devDependencies": {
     "async": "^2.1.4",

@@ -3,20 +3,16 @@ import lodashStable from 'lodash';
 import { falsey, args, slice, symbol, realm } from './utils.js';
 import isNaN from '../isNaN.js';
 
-describe('isNaN', function() {
-  it('should return `true` for NaNs', function() {
+describe('isNaN', () => {
+  it('should return `true` for NaNs', () => {
     assert.strictEqual(isNaN(NaN), true);
     assert.strictEqual(isNaN(Object(NaN)), true);
   });
 
-  it('should return `false` for non-NaNs', function() {
-    var expected = lodashStable.map(falsey, function(value) {
-      return value !== value;
-    });
+  it('should return `false` for non-NaNs', () => {
+    const expected = lodashStable.map(falsey, (value) => value !== value);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isNaN(value) : isNaN();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isNaN(value) : isNaN());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -35,7 +31,7 @@ describe('isNaN', function() {
     assert.strictEqual(isNaN(symbol), false);
   });
 
-  it('should work with `NaN` from another realm', function() {
+  it('should work with `NaN` from another realm', () => {
     if (realm.object) {
       assert.strictEqual(isNaN(realm.nan), true);
     }

@@ -1,4 +1,4 @@
-import words from './words.js'
+import words from './words.js';
 
 /**
  * Converts `string`, as space separated words, to upper case.
@@ -23,6 +23,6 @@ const upperCase = (string) => (
   words(`${string}`.replace(/['\u2019]/g, '')).reduce((result, word, index) => (
     result + (index ? ' ' : '') + word.toUpperCase()
   ), '')
-)
+);
 
-export default upperCase
+export default upperCase;

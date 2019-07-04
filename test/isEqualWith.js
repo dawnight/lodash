@@ -6,16 +6,16 @@ import isString from '../isString.js';
 import without from '../without.js';
 import partial from '../partial.js';
 
-describe('isEqualWith', function() {
-  it('should provide correct `customizer` arguments', function() {
-    var argsList = [],
-        object1 = { 'a': [1, 2], 'b': null },
-        object2 = { 'a': [1, 2], 'b': null };
+describe('isEqualWith', () => {
+  it('should provide correct `customizer` arguments', () => {
+    let argsList = [],
+      object1 = { 'a': [1, 2], 'b': null },
+      object2 = { 'a': [1, 2], 'b': null };
 
     object1.b = object2;
     object2.b = object1;
 
-    var expected = [
+    const expected = [
       [object1, object2],
       [object1.a, object2.a, 'a', object1, object2],
       [object1.a[0], object2.a[0], 0, object1.a, object2.a],
@@ -24,8 +24,8 @@ describe('isEqualWith', function() {
     ];
 
     isEqualWith(object1, object2, function() {
-      var length = arguments.length,
-          args = slice.call(arguments, 0, length - (length > 2 ? 1 : 0));
+      let length = arguments.length,
+        args = slice.call(arguments, 0, length - (length > 2 ? 1 : 0));
 
       argsList.push(args);
     });
@@ -33,14 +33,14 @@ describe('isEqualWith', function() {
     assert.deepStrictEqual(argsList, expected);
   });
 
-  it('should handle comparisons when `customizer` returns `undefined`', function() {
+  it('should handle comparisons when `customizer` returns `undefined`', () => {
     assert.strictEqual(isEqualWith('a', 'a', noop), true);
     assert.strictEqual(isEqualWith(['a'], ['a'], noop), true);
     assert.strictEqual(isEqualWith({ '0': 'a' }, { '0': 'a' }, noop), true);
   });
 
-  it('should not handle comparisons when `customizer` returns `true`', function() {
-    var customizer = function(value) {
+  it('should not handle comparisons when `customizer` returns `true`', () => {
+    const customizer = function(value) {
       return isString(value) || undefined;
     };
 
@@ -49,8 +49,8 @@ describe('isEqualWith', function() {
     assert.strictEqual(isEqualWith({ '0': 'a' }, { '0': 'b' }, customizer), true);
   });
 
-  it('should not handle comparisons when `customizer` returns `false`', function() {
-    var customizer = function(value) {
+  it('should not handle comparisons when `customizer` returns `false`', () => {
+    const customizer = function(value) {
       return isString(value) ? false : undefined;
     };
 
@@ -59,31 +59,31 @@ describe('isEqualWith', function() {
     assert.strictEqual(isEqualWith({ '0': 'a' }, { '0': 'a' }, customizer), false);
   });
 
-  it('should return a boolean value even when `customizer` does not', function() {
-    var actual = isEqualWith('a', 'b', stubC);
+  it('should return a boolean value even when `customizer` does not', () => {
+    let actual = isEqualWith('a', 'b', stubC);
     assert.strictEqual(actual, true);
 
-    var values = without(falsey, undefined),
-        expected = lodashStable.map(values, stubFalse);
+    let values = without(falsey, undefined),
+      expected = lodashStable.map(values, stubFalse);
 
     actual = [];
-    lodashStable.each(values, function(value) {
+    lodashStable.each(values, (value) => {
       actual.push(isEqualWith('a', 'a', lodashStable.constant(value)));
     });
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should ensure `customizer` is a function', function() {
-    var array = [1, 2, 3],
-        eq = partial(isEqualWith, array),
-        actual = lodashStable.map([array, [1, 0, 3]], eq);
+  it('should ensure `customizer` is a function', () => {
+    let array = [1, 2, 3],
+      eq = partial(isEqualWith, array),
+      actual = lodashStable.map([array, [1, 0, 3]], eq);
 
     assert.deepStrictEqual(actual, [true, false]);
   });
 
-  it('should call `customizer` for values maps and sets', function() {
-    var value = { 'a': { 'b': 2 } };
+  it('should call `customizer` for values maps and sets', () => {
+    const value = { 'a': { 'b': 2 } };
 
     if (Map) {
       var map1 = new Map;
@@ -99,12 +99,12 @@ describe('isEqualWith', function() {
       var set2 = new Set;
       set2.add(value);
     }
-    lodashStable.each([[map1, map2], [set1, set2]], function(pair, index) {
+    lodashStable.each([[map1, map2], [set1, set2]], (pair, index) => {
       if (pair[0]) {
-        var argsList = [],
-            array = lodashStable.toArray(pair[0]);
+        let argsList = [],
+          array = lodashStable.toArray(pair[0]);
 
-        var expected = [
+        const expected = [
           [pair[0], pair[1]],
           [array[0], array[0], 0, array, array],
           [array[0][0], array[0][0], 0, array[0], array[0]],
@@ -115,8 +115,8 @@ describe('isEqualWith', function() {
           expected.length = 2;
         }
         isEqualWith(pair[0], pair[1], function() {
-          var length = arguments.length,
-              args = slice.call(arguments, 0, length - (length > 2 ? 1 : 0));
+          let length = arguments.length,
+            args = slice.call(arguments, 0, length - (length > 2 ? 1 : 0));
 
           argsList.push(args);
         });

@@ -2,8 +2,8 @@ import assert from 'assert';
 import eachRight from '../eachRight.js';
 import forEachRight from '../forEachRight.js';
 
-describe('forEachRight', function() {
-  it('should be aliased', function() {
+describe('forEachRight', () => {
+  it('should be aliased', () => {
     assert.strictEqual(eachRight, forEachRight);
   });
 });

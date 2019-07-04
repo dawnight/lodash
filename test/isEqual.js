@@ -12,17 +12,17 @@ import {
   set,
   defineProperty,
   document,
-  stubFalse,
+  stubFalse
 } from './utils.js';
 
 import isEqual from '../isEqual.js';
 
-describe('isEqual', function() {
-  var symbol1 = Symbol ? Symbol('a') : true,
-      symbol2 = Symbol ? Symbol('b') : false;
+describe('isEqual', () => {
+  let symbol1 = Symbol ? Symbol('a') : true,
+    symbol2 = Symbol ? Symbol('b') : false;
 
-  it('should compare primitives', function() {
-    var pairs = [
+  it('should compare primitives', () => {
+    const pairs = [
       [1, 1, true], [1, Object(1), true], [1, '1', false], [1, 2, false],
       [-0, -0, true], [0, 0, true], [0, Object(0), true], [Object(0), Object(0), true], [-0, 0, true], [0, '0', false], [0, null, false],
       [NaN, NaN, true], [NaN, Object(NaN), true], [Object(NaN), Object(NaN), true], [NaN, 'a', false], [NaN, Infinity, false],
@@ -34,20 +34,16 @@ describe('isEqual', function() {
       [undefined, undefined, true], [undefined, null, false], [undefined, '', false]
     ];
 
-    var expected = lodashStable.map(pairs, function(pair) {
-      return pair[2];
-    });
+    const expected = lodashStable.map(pairs, (pair) => pair[2]);
 
-    var actual = lodashStable.map(pairs, function(pair) {
-      return isEqual(pair[0], pair[1]);
-    });
+    const actual = lodashStable.map(pairs, (pair) => isEqual(pair[0], pair[1]));
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should compare arrays', function() {
-    var array1 = [true, null, 1, 'a', undefined],
-        array2 = [true, null, 1, 'a', undefined];
+  it('should compare arrays', () => {
+    let array1 = [true, null, 1, 'a', undefined],
+      array2 = [true, null, 1, 'a', undefined];
 
     assert.strictEqual(isEqual(array1, array2), true);
 
@@ -81,9 +77,9 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(array1, array2), false);
   });
 
-  it('should treat arrays with identical values but different non-index properties as equal', function() {
-    var array1 = [1, 2, 3],
-        array2 = [1, 2, 3];
+  it('should treat arrays with identical values but different non-index properties as equal', () => {
+    let array1 = [1, 2, 3],
+      array2 = [1, 2, 3];
 
     array1.every = array1.filter = array1.forEach =
     array1.indexOf = array1.lastIndexOf = array1.map =
@@ -109,17 +105,17 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(array1, array2), true);
   });
 
-  it('should compare sparse arrays', function() {
-    var array = Array(1);
+  it('should compare sparse arrays', () => {
+    const array = Array(1);
 
     assert.strictEqual(isEqual(array, Array(1)), true);
     assert.strictEqual(isEqual(array, [undefined]), true);
     assert.strictEqual(isEqual(array, Array(2)), false);
   });
 
-  it('should compare plain objects', function() {
-    var object1 = { 'a': true, 'b': null, 'c': 1, 'd': 'a', 'e': undefined },
-        object2 = { 'a': true, 'b': null, 'c': 1, 'd': 'a', 'e': undefined };
+  it('should compare plain objects', () => {
+    let object1 = { 'a': true, 'b': null, 'c': 1, 'd': 'a', 'e': undefined },
+      object2 = { 'a': true, 'b': null, 'c': 1, 'd': 'a', 'e': undefined };
 
     assert.strictEqual(isEqual(object1, object2), true);
 
@@ -144,15 +140,15 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object2), false);
   });
 
-  it('should compare objects regardless of key order', function() {
-    var object1 = { 'a': 1, 'b': 2, 'c': 3 },
-        object2 = { 'c': 3, 'a': 1, 'b': 2 };
+  it('should compare objects regardless of key order', () => {
+    let object1 = { 'a': 1, 'b': 2, 'c': 3 },
+      object2 = { 'c': 3, 'a': 1, 'b': 2 };
 
     assert.strictEqual(isEqual(object1, object2), true);
   });
 
-  it('should compare nested objects', function() {
-    var object1 = {
+  it('should compare nested objects', () => {
+    const object1 = {
       'a': [1, 2, 3],
       'b': true,
       'c': Object(1),
@@ -166,7 +162,7 @@ describe('isEqual', function() {
       }
     };
 
-    var object2 = {
+    const object2 = {
       'a': [1, Object(2), 3],
       'b': Object(true),
       'c': 1,
@@ -183,7 +179,7 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object2), true);
   });
 
-  it('should compare object instances', function() {
+  it('should compare object instances', () => {
     function Foo() {
       this.a = 1;
     }
@@ -200,7 +196,7 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual({ 'a': 2 }, new Bar), false);
   });
 
-  it('should compare objects with constructor properties', function() {
+  it('should compare objects with constructor properties', () => {
     assert.strictEqual(isEqual({ 'constructor': 1 },   { 'constructor': 1 }), true);
     assert.strictEqual(isEqual({ 'constructor': 1 },   { 'constructor': '1' }), false);
     assert.strictEqual(isEqual({ 'constructor': [1] }, { 'constructor': [1] }), true);
@@ -208,9 +204,9 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual({ 'constructor': Object }, {}), false);
   });
 
-  it('should compare arrays with circular references', function() {
-    var array1 = [],
-        array2 = [];
+  it('should compare arrays with circular references', () => {
+    let array1 = [],
+      array2 = [];
 
     array1.push(array1);
     array2.push(array2);
@@ -234,10 +230,10 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(array1, array2), false);
   });
 
-  it('should have transitive equivalence for circular references of arrays', function() {
-    var array1 = [],
-        array2 = [array1],
-        array3 = [array2];
+  it('should have transitive equivalence for circular references of arrays', () => {
+    let array1 = [],
+      array2 = [array1],
+      array3 = [array2];
 
     array1[0] = array1;
 
@@ -246,9 +242,9 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(array1, array3), true);
   });
 
-  it('should compare objects with circular references', function() {
-    var object1 = {},
-        object2 = {};
+  it('should compare objects with circular references', () => {
+    let object1 = {},
+      object2 = {};
 
     object1.a = object1;
     object2.a = object2;
@@ -272,10 +268,10 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object2), false);
   });
 
-  it('should have transitive equivalence for circular references of objects', function() {
-    var object1 = {},
-        object2 = { 'a': object1 },
-        object3 = { 'a': object2 };
+  it('should have transitive equivalence for circular references of objects', () => {
+    let object1 = {},
+      object2 = { 'a': object1 },
+      object3 = { 'a': object2 };
 
     object1.a = object1;
 
@@ -284,9 +280,9 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object3), true);
   });
 
-  it('should compare objects with multiple circular references', function() {
-    var array1 = [{}],
-        array2 = [{}];
+  it('should compare objects with multiple circular references', () => {
+    let array1 = [{}],
+      array2 = [{}];
 
     (array1[0].a = array1).push(array1);
     (array2[0].a = array2).push(array2);
@@ -304,13 +300,13 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(array1, array2), false);
   });
 
-  it('should compare objects with complex circular references', function() {
-    var object1 = {
+  it('should compare objects with complex circular references', () => {
+    const object1 = {
       'foo': { 'b': { 'c': { 'd': {} } } },
       'bar': { 'a': 2 }
     };
 
-    var object2 = {
+    const object2 = {
       'foo': { 'b': { 'c': { 'd': {} } } },
       'bar': { 'a': 2 }
     };
@@ -324,12 +320,12 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object2), true);
   });
 
-  it('should compare objects with shared property values', function() {
-    var object1 = {
+  it('should compare objects with shared property values', () => {
+    const object1 = {
       'a': [1, 2]
     };
 
-    var object2 = {
+    const object2 = {
       'a': [1, 2],
       'b': [1, 2]
     };
@@ -339,22 +335,22 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object2), true);
   });
 
-  it('should treat objects created by `Object.create(null)` like plain objects', function() {
+  it('should treat objects created by `Object.create(null)` like plain objects', () => {
     function Foo() {
       this.a = 1;
     }
     Foo.prototype.constructor = null;
 
-    var object1 = create(null);
+    const object1 = create(null);
     object1.a = 1;
 
-    var object2 = { 'a': 1 };
+    const object2 = { 'a': 1 };
 
     assert.strictEqual(isEqual(object1, object2), true);
     assert.strictEqual(isEqual(new Foo, object2), false);
   });
 
-  it('should avoid common type coercions', function() {
+  it('should avoid common type coercions', () => {
     assert.strictEqual(isEqual(true, Object(false)), false);
     assert.strictEqual(isEqual(Object(false), Object(0)), false);
     assert.strictEqual(isEqual(false, Object('')), false);
@@ -366,17 +362,17 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(36, '36'), false);
   });
 
-  it('should compare `arguments` objects', function() {
-    var args1 = (function() { return arguments; }()),
-        args2 = (function() { return arguments; }()),
-        args3 = (function() { return arguments; }(1, 2));
+  it('should compare `arguments` objects', () => {
+    let args1 = (function() { return arguments; }()),
+      args2 = (function() { return arguments; }()),
+      args3 = (function() { return arguments; }(1, 2));
 
     assert.strictEqual(isEqual(args1, args2), true);
     assert.strictEqual(isEqual(args1, args3), false);
   });
 
-  it('should treat `arguments` objects like `Object` objects', function() {
-    var object = { '0': 1, '1': 2, '2': 3 };
+  it('should treat `arguments` objects like `Object` objects', () => {
+    const object = { '0': 1, '1': 2, '2': 3 };
 
     function Foo() {}
     Foo.prototype = object;
@@ -387,43 +383,41 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(new Foo, args), false);
   });
 
-  it('should compare array buffers', function() {
+  it('should compare array buffers', () => {
     if (ArrayBuffer) {
-      var buffer = new Int8Array([-1]).buffer;
+      const buffer = new Int8Array([-1]).buffer;
 
       assert.strictEqual(isEqual(buffer, new Uint8Array([255]).buffer), true);
       assert.strictEqual(isEqual(buffer, new ArrayBuffer(1)), false);
     }
   });
 
-  it('should compare array views', function() {
-    lodashStable.times(2, function(index) {
-      var ns = index ? realm : root;
+  it('should compare array views', () => {
+    lodashStable.times(2, (index) => {
+      const ns = index ? realm : root;
 
-      var pairs = lodashStable.map(arrayViews, function(type, viewIndex) {
-        var otherType = arrayViews[(viewIndex + 1) % arrayViews.length],
-            CtorA = ns[type] || function(n) { this.n = n; },
-            CtorB = ns[otherType] || function(n) { this.n = n; },
-            bufferA = ns[type] ? new ns.ArrayBuffer(8) : 8,
-            bufferB = ns[otherType] ? new ns.ArrayBuffer(8) : 8,
-            bufferC = ns[otherType] ? new ns.ArrayBuffer(16) : 16;
+      const pairs = lodashStable.map(arrayViews, (type, viewIndex) => {
+        let otherType = arrayViews[(viewIndex + 1) % arrayViews.length],
+          CtorA = ns[type] || function(n) { this.n = n; },
+          CtorB = ns[otherType] || function(n) { this.n = n; },
+          bufferA = ns[type] ? new ns.ArrayBuffer(8) : 8,
+          bufferB = ns[otherType] ? new ns.ArrayBuffer(8) : 8,
+          bufferC = ns[otherType] ? new ns.ArrayBuffer(16) : 16;
 
         return [new CtorA(bufferA), new CtorA(bufferA), new CtorB(bufferB), new CtorB(bufferC)];
       });
 
-      var expected = lodashStable.map(pairs, lodashStable.constant([true, false, false]));
+      const expected = lodashStable.map(pairs, lodashStable.constant([true, false, false]));
 
-      var actual = lodashStable.map(pairs, function(pair) {
-        return [isEqual(pair[0], pair[1]), isEqual(pair[0], pair[2]), isEqual(pair[2], pair[3])];
-      });
+      const actual = lodashStable.map(pairs, (pair) => [isEqual(pair[0], pair[1]), isEqual(pair[0], pair[2]), isEqual(pair[2], pair[3])]);
 
       assert.deepStrictEqual(actual, expected);
     });
   });
 
-  it('should compare buffers', function() {
+  it('should compare buffers', () => {
     if (Buffer) {
-      var buffer = new Buffer([1]);
+      const buffer = new Buffer([1]);
 
       assert.strictEqual(isEqual(buffer, new Buffer([1])), true);
       assert.strictEqual(isEqual(buffer, new Buffer([2])), false);
@@ -431,8 +425,8 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare date objects', function() {
-    var date = new Date(2012, 4, 23);
+  it('should compare date objects', () => {
+    const date = new Date(2012, 4, 23);
 
     assert.strictEqual(isEqual(date, new Date(2012, 4, 23)), true);
     assert.strictEqual(isEqual(new Date('a'), new Date('b')), true);
@@ -440,8 +434,8 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(date, { 'getTime': lodashStable.constant(+date) }), false);
   });
 
-  it('should compare error objects', function() {
-    var pairs = lodashStable.map([
+  it('should compare error objects', () => {
+    const pairs = lodashStable.map([
       'Error',
       'EvalError',
       'RangeError',
@@ -449,24 +443,22 @@ describe('isEqual', function() {
       'SyntaxError',
       'TypeError',
       'URIError'
-    ], function(type, index, errorTypes) {
-      var otherType = errorTypes[++index % errorTypes.length],
-          CtorA = root[type],
-          CtorB = root[otherType];
+    ], (type, index, errorTypes) => {
+      let otherType = errorTypes[++index % errorTypes.length],
+        CtorA = root[type],
+        CtorB = root[otherType];
 
       return [new CtorA('a'), new CtorA('a'), new CtorB('a'), new CtorB('b')];
     });
 
-    var expected = lodashStable.map(pairs, lodashStable.constant([true, false, false]));
+    const expected = lodashStable.map(pairs, lodashStable.constant([true, false, false]));
 
-    var actual = lodashStable.map(pairs, function(pair) {
-      return [isEqual(pair[0], pair[1]), isEqual(pair[0], pair[2]), isEqual(pair[2], pair[3])];
-    });
+    const actual = lodashStable.map(pairs, (pair) => [isEqual(pair[0], pair[1]), isEqual(pair[0], pair[2]), isEqual(pair[2], pair[3])]);
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should compare functions', function() {
+  it('should compare functions', () => {
     function a() { return 1 + 2; }
     function b() { return 1 + 2; }
 
@@ -474,11 +466,11 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(a, b), false);
   });
 
-  it('should compare maps', function() {
+  it('should compare maps', () => {
     if (Map) {
-      lodashStable.each([[map, new Map], [map, realm.map]], function(maps) {
-        var map1 = maps[0],
-            map2 = maps[1];
+      lodashStable.each([[map, new Map], [map, realm.map]], (maps) => {
+        let map1 = maps[0],
+          map2 = maps[1];
 
         map1.set('a', 1);
         map2.set('b', 2);
@@ -501,10 +493,10 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare maps with circular references', function() {
+  it('should compare maps with circular references', () => {
     if (Map) {
-      var map1 = new Map,
-          map2 = new Map;
+      let map1 = new Map,
+        map2 = new Map;
 
       map1.set('a', map1);
       map2.set('a', map2);
@@ -516,11 +508,11 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare promises by reference', function() {
+  it('should compare promises by reference', () => {
     if (promise) {
-      lodashStable.each([[promise, Promise.resolve(1)], [promise, realm.promise]], function(promises) {
-        var promise1 = promises[0],
-            promise2 = promises[1];
+      lodashStable.each([[promise, Promise.resolve(1)], [promise, realm.promise]], (promises) => {
+        let promise1 = promises[0],
+          promise2 = promises[1];
 
         assert.strictEqual(isEqual(promise1, promise2), false);
         assert.strictEqual(isEqual(promise1, promise1), true);
@@ -528,7 +520,7 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare regexes', function() {
+  it('should compare regexes', () => {
     assert.strictEqual(isEqual(/x/gim, /x/gim), true);
     assert.strictEqual(isEqual(/x/gim, /x/mgi), true);
     assert.strictEqual(isEqual(/x/gi, /x/g), false);
@@ -536,11 +528,11 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(/x/g, { 'global': true, 'ignoreCase': false, 'multiline': false, 'source': 'x' }), false);
   });
 
-  it('should compare sets', function() {
+  it('should compare sets', () => {
     if (Set) {
-      lodashStable.each([[set, new Set], [set, realm.set]], function(sets) {
-        var set1 = sets[0],
-            set2 = sets[1];
+      lodashStable.each([[set, new Set], [set, realm.set]], (sets) => {
+        let set1 = sets[0],
+          set2 = sets[1];
 
         set1.add(1);
         set2.add(2);
@@ -563,10 +555,10 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare sets with circular references', function() {
+  it('should compare sets with circular references', () => {
     if (Set) {
-      var set1 = new Set,
-          set2 = new Set;
+      let set1 = new Set,
+        set2 = new Set;
 
       set1.add(set1);
       set2.add(set2);
@@ -578,10 +570,10 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare symbol properties', function() {
+  it('should compare symbol properties', () => {
     if (Symbol) {
-      var object1 = { 'a': 1 },
-          object2 = { 'a': 1 };
+      let object1 = { 'a': 1 },
+        object2 = { 'a': 1 };
 
       object1[symbol1] = { 'a': { 'b': 2 } };
       object2[symbol1] = { 'a': { 'b': 2 } };
@@ -604,10 +596,10 @@ describe('isEqual', function() {
     }
   });
 
-  it('should compare wrapped values', function() {
-    var stamp = +new Date;
+  it('should compare wrapped values', () => {
+    const stamp = +new Date;
 
-    var values = [
+    const values = [
       [[1, 2], [1, 2], [1, 2, 3]],
       [true, true, false],
       [new Date(stamp), new Date(stamp), new Date(stamp - 100)],
@@ -618,10 +610,10 @@ describe('isEqual', function() {
       ['a', 'a', 'A']
     ];
 
-    lodashStable.each(values, function(vals) {
-      var wrapped1 = _(vals[0]),
-          wrapped2 = _(vals[1]),
-          actual = wrapped1.isEqual(wrapped2);
+    lodashStable.each(values, (vals) => {
+      let wrapped1 = _(vals[0]),
+        wrapped2 = _(vals[1]),
+        actual = wrapped1.isEqual(wrapped2);
 
       assert.strictEqual(actual, true);
       assert.strictEqual(isEqual(_(actual), _(true)), true);
@@ -635,9 +627,9 @@ describe('isEqual', function() {
     });
   });
 
-  it('should compare wrapped and non-wrapped values', function() {
-    var object1 = _({ 'a': 1, 'b': 2 }),
-        object2 = { 'a': 1, 'b': 2 };
+  it('should compare wrapped and non-wrapped values', () => {
+    let object1 = _({ 'a': 1, 'b': 2 }),
+      object2 = { 'a': 1, 'b': 2 };
 
     assert.strictEqual(object1.isEqual(object2), true);
     assert.strictEqual(isEqual(object1, object2), true);
@@ -649,15 +641,15 @@ describe('isEqual', function() {
     assert.strictEqual(isEqual(object1, object2), false);
   });
 
-  it('should work as an iteratee for `_.every`', function() {
-    var actual = lodashStable.every([1, 1, 1], lodashStable.partial(isEqual, 1));
+  it('should work as an iteratee for `_.every`', () => {
+    const actual = lodashStable.every([1, 1, 1], lodashStable.partial(isEqual, 1));
     assert.ok(actual);
   });
 
-  it('should not error on DOM elements', function() {
+  it('should not error on DOM elements', () => {
     if (document) {
-      var element1 = document.createElement('div'),
-          element2 = element1.cloneNode(true);
+      let element1 = document.createElement('div'),
+        element2 = element1.cloneNode(true);
 
       try {
         assert.strictEqual(isEqual(element1, element2), false);
@@ -667,7 +659,7 @@ describe('isEqual', function() {
     }
   });
 
-  it('should return `true` for like-objects from different documents', function() {
+  it('should return `true` for like-objects from different documents', () => {
     if (realm.object) {
       assert.strictEqual(isEqual([1], realm.array), true);
       assert.strictEqual(isEqual([2], realm.array), false);
@@ -676,13 +668,13 @@ describe('isEqual', function() {
     }
   });
 
-  it('should return `false` for objects with custom `toString` methods', function() {
-    var primitive,
-        object = { 'toString': function() { return primitive; } },
-        values = [true, null, 1, 'a', undefined],
-        expected = lodashStable.map(values, stubFalse);
+  it('should return `false` for objects with custom `toString` methods', () => {
+    let primitive,
+      object = { 'toString': function() { return primitive; } },
+      values = [true, null, 1, 'a', undefined],
+      expected = lodashStable.map(values, stubFalse);
 
-    var actual = lodashStable.map(values, function(value) {
+    const actual = lodashStable.map(values, (value) => {
       primitive = value;
       return isEqual(object, value);
     });
@@ -690,11 +682,11 @@ describe('isEqual', function() {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should return an unwrapped value when implicitly chaining', function() {
+  it('should return an unwrapped value when implicitly chaining', () => {
     assert.strictEqual(_('a').isEqual('a'), true);
   });
 
-  it('should return a wrapped value when explicitly chaining', function() {
+  it('should return a wrapped value when explicitly chaining', () => {
     assert.ok(_('a').chain().isEqual('a') instanceof _);
   });
 });

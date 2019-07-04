@@ -2,8 +2,8 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _, slice, isNpm, noop, MAX_SAFE_INTEGER, stubTrue } from './utils.js';
 
-describe('iteration methods', function() {
-  var methods = [
+describe('iteration methods', () => {
+  const methods = [
     '_baseEach',
     'countBy',
     'every',
@@ -34,14 +34,14 @@ describe('iteration methods', function() {
     'some'
   ];
 
-  var arrayMethods = [
+  const arrayMethods = [
     'findIndex',
     'findLastIndex',
     'maxBy',
     'minBy'
   ];
 
-  var collectionMethods = [
+  const collectionMethods = [
     '_baseEach',
     'countBy',
     'every',
@@ -60,14 +60,14 @@ describe('iteration methods', function() {
     'some'
   ];
 
-  var forInMethods = [
+  const forInMethods = [
     'forIn',
     'forInRight',
     'omitBy',
     'pickBy'
   ];
 
-  var iterationMethods = [
+  const iterationMethods = [
     '_baseEach',
     'forEach',
     'forEachRight',
@@ -77,7 +77,7 @@ describe('iteration methods', function() {
     'forOwnRight'
   ];
 
-  var objectMethods = [
+  const objectMethods = [
     'findKey',
     'findLastKey',
     'forIn',
@@ -90,7 +90,7 @@ describe('iteration methods', function() {
     'pickBy'
   ];
 
-  var rightMethods = [
+  const rightMethods = [
     'findLast',
     'findLastIndex',
     'findLastKey',
@@ -99,7 +99,7 @@ describe('iteration methods', function() {
     'forOwnRight'
   ];
 
-  var unwrappedMethods = [
+  const unwrappedMethods = [
     'each',
     'eachRight',
     'every',
@@ -122,18 +122,18 @@ describe('iteration methods', function() {
     'some'
   ];
 
-  lodashStable.each(methods, function(methodName) {
-    var array = [1, 2, 3],
-        func = _[methodName],
-        isBy = /(^partition|By)$/.test(methodName),
-        isFind = /^find/.test(methodName),
-        isOmitPick = /^(?:omit|pick)By$/.test(methodName),
-        isSome = methodName == 'some';
+  lodashStable.each(methods, (methodName) => {
+    let array = [1, 2, 3],
+      func = _[methodName],
+      isBy = /(^partition|By)$/.test(methodName),
+      isFind = /^find/.test(methodName),
+      isOmitPick = /^(?:omit|pick)By$/.test(methodName),
+      isSome = methodName == 'some';
 
-    it('`_.' + methodName + '` should provide correct iteratee arguments', function() {
+    it(`\`_.${methodName}\` should provide correct iteratee arguments`, () => {
       if (func) {
-        var args,
-            expected = [1, 0, array];
+        let args,
+          expected = [1, 0, array];
 
         func(array, function() {
           args || (args = slice.call(arguments));
@@ -153,22 +153,20 @@ describe('iteration methods', function() {
       }
     });
 
-    it('`_.' + methodName + '` should treat sparse arrays as dense', function() {
+    it(`\`_.${methodName}\` should treat sparse arrays as dense`, () => {
       if (func) {
-        var array = [1];
+        const array = [1];
         array[2] = 3;
 
-        var expected = lodashStable.includes(objectMethods, methodName)
+        let expected = lodashStable.includes(objectMethods, methodName)
           ? [[1, '0', array], [undefined, '1', array], [3, '2', array]]
           : [[1,  0, array],  [undefined,  1,  array], [3,  2,  array]];
 
         if (isBy) {
-          expected = lodashStable.map(expected, function(args) {
-            return args.slice(0, isOmitPick ? 2 : 1);
-          });
+          expected = lodashStable.map(expected, (args) => args.slice(0, isOmitPick ? 2 : 1));
         }
         else if (lodashStable.includes(objectMethods, methodName)) {
-          expected = lodashStable.map(expected, function(args) {
+          expected = lodashStable.map(expected, (args) => {
             args[1] += '';
             return args;
           });
@@ -176,7 +174,7 @@ describe('iteration methods', function() {
         if (lodashStable.includes(rightMethods, methodName)) {
           expected.reverse();
         }
-        var argsList = [];
+        const argsList = [];
         func(array, function() {
           argsList.push(slice.call(arguments));
           return !(isFind || isSome);
@@ -187,17 +185,17 @@ describe('iteration methods', function() {
     });
   });
 
-  lodashStable.each(lodashStable.difference(methods, objectMethods), function(methodName) {
-    var array = [1, 2, 3],
-        func = _[methodName],
-        isEvery = methodName == 'every';
+  lodashStable.each(lodashStable.difference(methods, objectMethods), (methodName) => {
+    let array = [1, 2, 3],
+      func = _[methodName],
+      isEvery = methodName == 'every';
 
     array.a = 1;
 
-    it('`_.' + methodName + '` should not iterate custom properties on arrays', function() {
+    it(`\`_.${methodName}\` should not iterate custom properties on arrays`, () => {
       if (func) {
-        var keys = [];
-        func(array, function(value, key) {
+        const keys = [];
+        func(array, (value, key) => {
           keys.push(key);
           return isEvery;
         });
@@ -207,82 +205,80 @@ describe('iteration methods', function() {
     });
   });
 
-  lodashStable.each(lodashStable.difference(methods, unwrappedMethods), function(methodName) {
-    var array = [1, 2, 3],
-        isBaseEach = methodName == '_baseEach';
+  lodashStable.each(lodashStable.difference(methods, unwrappedMethods), (methodName) => {
+    let array = [1, 2, 3],
+      isBaseEach = methodName == '_baseEach';
 
-    it('`_.' + methodName + '` should return a wrapped value when implicitly chaining', function() {
+    it(`\`_.${methodName}\` should return a wrapped value when implicitly chaining`, () => {
       if (!(isBaseEach || isNpm)) {
-        var wrapped = _(array)[methodName](noop);
+        const wrapped = _(array)[methodName](noop);
         assert.ok(wrapped instanceof _);
       }
     });
   });
 
-  lodashStable.each(unwrappedMethods, function(methodName) {
-    var array = [1, 2, 3];
+  lodashStable.each(unwrappedMethods, (methodName) => {
+    const array = [1, 2, 3];
 
-    it('`_.' + methodName + '` should return an unwrapped value when implicitly chaining', function() {
-      var actual = _(array)[methodName](noop);
+    it(`\`_.${methodName}\` should return an unwrapped value when implicitly chaining`, () => {
+      const actual = _(array)[methodName](noop);
       assert.notOk(actual instanceof _);
     });
 
-    it('`_.' + methodName + '` should return a wrapped value when explicitly chaining', function() {
-      var wrapped = _(array).chain(),
-          actual = wrapped[methodName](noop);
+    it(`\`_.${methodName}\` should return a wrapped value when explicitly chaining`, () => {
+      let wrapped = _(array).chain(),
+        actual = wrapped[methodName](noop);
 
       assert.ok(actual instanceof _);
       assert.notStrictEqual(actual, wrapped);
     });
   });
 
-  lodashStable.each(lodashStable.difference(methods, arrayMethods, forInMethods), function(methodName) {
-    var func = _[methodName];
+  lodashStable.each(lodashStable.difference(methods, arrayMethods, forInMethods), (methodName) => {
+    const func = _[methodName];
 
-    it('`_.' + methodName + '` iterates over own string keyed properties of objects', function() {
+    it(`\`_.${methodName}\` iterates over own string keyed properties of objects`, () => {
       function Foo() {
         this.a = 1;
       }
       Foo.prototype.b = 2;
 
       if (func) {
-        var values = [];
-        func(new Foo, function(value) { values.push(value); });
+        const values = [];
+        func(new Foo, (value) => { values.push(value); });
         assert.deepStrictEqual(values, [1]);
       }
     });
   });
 
-  lodashStable.each(iterationMethods, function(methodName) {
-    var array = [1, 2, 3],
-        func = _[methodName];
+  lodashStable.each(iterationMethods, (methodName) => {
+    let array = [1, 2, 3],
+      func = _[methodName];
 
-    it('`_.' + methodName + '` should return the collection', function() {
+    it(`\`_.${methodName}\` should return the collection`, () => {
       if (func) {
         assert.strictEqual(func(array, Boolean), array);
       }
     });
   });
 
-  lodashStable.each(collectionMethods, function(methodName) {
-    var func = _[methodName];
+  lodashStable.each(collectionMethods, (methodName) => {
+    const func = _[methodName];
 
-    it('`_.' + methodName + '` should use `isArrayLike` to determine whether a value is array-like', function() {
+    it(`\`_.${methodName}\` should use \`isArrayLike\` to determine whether a value is array-like`, () => {
       if (func) {
-        var isIteratedAsObject = function(object) {
-          var result = false;
-          func(object, function() { result = true; }, 0);
+        const isIteratedAsObject = function(object) {
+          let result = false;
+          func(object, () => { result = true; }, 0);
           return result;
         };
 
-        var values = [-1, '1', 1.1, Object(1), MAX_SAFE_INTEGER + 1],
-            expected = lodashStable.map(values, stubTrue);
+        let values = [-1, '1', 1.1, Object(1), MAX_SAFE_INTEGER + 1],
+          expected = lodashStable.map(values, stubTrue);
 
-        var actual = lodashStable.map(values, function(length) {
-          return isIteratedAsObject({ 'length': length });
-        });
+        const actual = lodashStable.map(values, (length) => isIteratedAsObject({ 'length': length }));
 
-        var Foo = function(a) {};
+        const Foo = function(a) {};
         Foo.a = 1;
 
         assert.deepStrictEqual(actual, expected);
@@ -292,18 +288,18 @@ describe('iteration methods', function() {
     });
   });
 
-  lodashStable.each(methods, function(methodName) {
-    var func = _[methodName],
-        isFind = /^find/.test(methodName),
-        isSome = methodName == 'some',
-        isReduce = /^reduce/.test(methodName);
+  lodashStable.each(methods, (methodName) => {
+    let func = _[methodName],
+      isFind = /^find/.test(methodName),
+      isSome = methodName == 'some',
+      isReduce = /^reduce/.test(methodName);
 
-    it('`_.' + methodName + '` should ignore changes to `length`', function() {
+    it(`\`_.${methodName}\` should ignore changes to \`length\``, () => {
       if (func) {
-        var count = 0,
-            array = [1];
+        let count = 0,
+          array = [1];
 
-        func(array, function() {
+        func(array, () => {
           if (++count == 1) {
             array.push(2);
           }
@@ -315,18 +311,18 @@ describe('iteration methods', function() {
     });
   });
 
-  lodashStable.each(lodashStable.difference(lodashStable.union(methods, collectionMethods), arrayMethods), function(methodName) {
-    var func = _[methodName],
-        isFind = /^find/.test(methodName),
-        isSome = methodName == 'some',
-        isReduce = /^reduce/.test(methodName);
+  lodashStable.each(lodashStable.difference(lodashStable.union(methods, collectionMethods), arrayMethods), (methodName) => {
+    let func = _[methodName],
+      isFind = /^find/.test(methodName),
+      isSome = methodName == 'some',
+      isReduce = /^reduce/.test(methodName);
 
-    it('`_.' + methodName + '` should ignore added `object` properties', function() {
+    it(`\`_.${methodName}\` should ignore added \`object\` properties`, () => {
       if (func) {
-        var count = 0,
-            object = { 'a': 1 };
+        let count = 0,
+          object = { 'a': 1 };
 
-        func(object, function() {
+        func(object, () => {
           if (++count == 1) {
             object.b = 2;
           }

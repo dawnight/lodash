@@ -3,20 +3,18 @@ import lodashStable from 'lodash';
 import { symbol, falsey, stubFalse, args, slice, realm } from './utils.js';
 import isSymbol from '../isSymbol.js';
 
-describe('isSymbol', function() {
-  it('should return `true` for symbols', function() {
+describe('isSymbol', () => {
+  it('should return `true` for symbols', () => {
     if (Symbol) {
       assert.strictEqual(isSymbol(symbol), true);
       assert.strictEqual(isSymbol(Object(symbol)), true);
     }
   });
 
-  it('should return `false` for non-symbols', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-symbols', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isSymbol(value) : isSymbol();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isSymbol(value) : isSymbol());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -33,7 +31,7 @@ describe('isSymbol', function() {
     assert.strictEqual(isSymbol('a'), false);
   });
 
-  it('should work with symbols from another realm', function() {
+  it('should work with symbols from another realm', () => {
     if (Symbol && realm.symbol) {
       assert.strictEqual(isSymbol(realm.symbol), true);
     }

@@ -2,25 +2,25 @@ import assert from 'assert';
 import lodashStable from 'lodash';
 import { _, falsey, stubObject, noop } from './utils.js';
 
-describe('mapKeys and mapValues', function() {
-  lodashStable.each(['mapKeys', 'mapValues'], function(methodName) {
-    var func = _[methodName],
-        object = { 'a': 1, 'b': 2 };
+describe('mapKeys and mapValues', () => {
+  lodashStable.each(['mapKeys', 'mapValues'], (methodName) => {
+    let func = _[methodName],
+      object = { 'a': 1, 'b': 2 };
 
-    it('`_.' + methodName + '` should iterate over own string keyed properties of objects', function() {
+    it(`\`_.${methodName}\` should iterate over own string keyed properties of objects`, () => {
       function Foo() {
         this.a = 'a';
       }
       Foo.prototype.b = 'b';
 
-      var actual = func(new Foo, function(value, key) { return key; });
+      const actual = func(new Foo, (value, key) => key);
       assert.deepStrictEqual(actual, { 'a': 'a' });
     });
 
-    it('`_.' + methodName + '` should accept a falsey `object`', function() {
-      var expected = lodashStable.map(falsey, stubObject);
+    it(`\`_.${methodName}\` should accept a falsey \`object\``, () => {
+      const expected = lodashStable.map(falsey, stubObject);
 
-      var actual = lodashStable.map(falsey, function(object, index) {
+      const actual = lodashStable.map(falsey, (object, index) => {
         try {
           return index ? func(object) : func();
         } catch (e) {}
@@ -29,7 +29,7 @@ describe('mapKeys and mapValues', function() {
       assert.deepStrictEqual(actual, expected);
     });
 
-    it('`_.' + methodName + '` should return a wrapped value when chaining', function() {
+    it(`\`_.${methodName}\` should return a wrapped value when chaining`, () => {
       assert.ok(_(object)[methodName](noop) instanceof _);
     });
   });

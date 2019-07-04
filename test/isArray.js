@@ -3,17 +3,15 @@ import lodashStable from 'lodash';
 import { falsey, stubFalse, args, slice, symbol, realm } from './utils.js';
 import isArray from '../isArray.js';
 
-describe('isArray', function() {
-  it('should return `true` for arrays', function() {
+describe('isArray', () => {
+  it('should return `true` for arrays', () => {
     assert.strictEqual(isArray([1, 2, 3]), true);
   });
 
-  it('should return `false` for non-arrays', function() {
-    var expected = lodashStable.map(falsey, stubFalse);
+  it('should return `false` for non-arrays', () => {
+    const expected = lodashStable.map(falsey, stubFalse);
 
-    var actual = lodashStable.map(falsey, function(value, index) {
-      return index ? isArray(value) : isArray();
-    });
+    const actual = lodashStable.map(falsey, (value, index) => index ? isArray(value) : isArray());
 
     assert.deepStrictEqual(actual, expected);
 
@@ -30,7 +28,7 @@ describe('isArray', function() {
     assert.strictEqual(isArray(symbol), false);
   });
 
-  it('should work with an array from another realm', function() {
+  it('should work with an array from another realm', () => {
     if (realm.array) {
       assert.strictEqual(isArray(realm.array), true);
     }

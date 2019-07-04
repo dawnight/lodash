@@ -2,12 +2,12 @@ import assert from 'assert';
 import { MAX_SAFE_INTEGER } from './utils.js';
 import _isIterateeCall from '../.internal/isIterateeCall.js';
 
-describe('isIterateeCall', function() {
-  var array = [1],
-      func = _isIterateeCall,
-      object =  { 'a': 1 };
+describe('isIterateeCall', () => {
+  let array = [1],
+    func = _isIterateeCall,
+    object =  { 'a': 1 };
 
-  it('should return `true` for iteratee calls', function() {
+  it('should return `true` for iteratee calls', () => {
     function Foo() {}
     Foo.prototype.a = 1;
 
@@ -18,7 +18,7 @@ describe('isIterateeCall', function() {
     }
   });
 
-  it('should return `false` for non-iteratee calls', function() {
+  it('should return `false` for non-iteratee calls', () => {
     if (func) {
       assert.strictEqual(func(2, 0, array), false);
       assert.strictEqual(func(1, 1.1, array), false);
@@ -27,14 +27,14 @@ describe('isIterateeCall', function() {
     }
   });
 
-  it('should work with `NaN` values', function() {
+  it('should work with `NaN` values', () => {
     if (func) {
       assert.strictEqual(func(NaN, 0, [NaN]), true);
       assert.strictEqual(func(NaN, 'a', { 'a': NaN }), true);
     }
   });
 
-  it('should not error when `index` is an object without a `toString` method', function() {
+  it('should not error when `index` is an object without a `toString` method', () => {
     if (func) {
       try {
         var actual = func(1, { 'toString': null }, [1]);

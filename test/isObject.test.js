@@ -3,8 +3,8 @@ import lodashStable from 'lodash';
 import { args, slice, document, body, symbol, falsey, stubFalse, realm } from './utils.js';
 import isObject from '../isObject.js';
 
-describe('isObject', function() {
-  it('should return `true` for objects', function() {
+describe('isObject', () => {
+  it('should return `true` for objects', () => {
     assert.strictEqual(isObject(args), true);
     assert.strictEqual(isObject([1, 2, 3]), true);
     assert.strictEqual(isObject(Object(false)), true);
@@ -25,18 +25,16 @@ describe('isObject', function() {
     }
   });
 
-  it('should return `false` for non-objects', function() {
-    var values = falsey.concat(true, 1, 'a', symbol),
-        expected = lodashStable.map(values, stubFalse);
+  it('should return `false` for non-objects', () => {
+    let values = falsey.concat(true, 1, 'a', symbol),
+      expected = lodashStable.map(values, stubFalse);
 
-    var actual = lodashStable.map(values, function(value, index) {
-      return index ? isObject(value) : isObject();
-    });
+    const actual = lodashStable.map(values, (value, index) => index ? isObject(value) : isObject());
 
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should work with objects from another realm', function() {
+  it('should work with objects from another realm', () => {
     if (realm.element) {
       assert.strictEqual(isObject(realm.element), true);
     }

@@ -3,26 +3,26 @@ import lodashStable from 'lodash';
 import runInContext from '../runInContext.js';
 import uniqueId from '../uniqueId.js';
 
-describe('runInContext', function() {
-  it('should not require a fully populated `context` object', function() {
-    var lodash = runInContext({
+describe('runInContext', () => {
+  it('should not require a fully populated `context` object', () => {
+    const lodash = runInContext({
       'setTimeout': function(func) { func(); }
     });
 
-    var pass = false;
-    lodash.delay(function() { pass = true; }, 32);
+    let pass = false;
+    lodash.delay(() => { pass = true; }, 32);
     assert.ok(pass);
   });
 
-  it('should use a zeroed `_.uniqueId` counter', function() {
+  it('should use a zeroed `_.uniqueId` counter', () => {
     lodashStable.times(2, uniqueId);
 
-    var oldId = Number(uniqueId()),
-        lodash = runInContext();
+    let oldId = Number(uniqueId()),
+      lodash = runInContext();
 
     assert.ok(uniqueId() > oldId);
 
-    var id = lodash.uniqueId();
+    const id = lodash.uniqueId();
     assert.strictEqual(id, '1');
     assert.ok(id < oldId);
   });

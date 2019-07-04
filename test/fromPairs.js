@@ -4,19 +4,19 @@ import { falsey, stubObject, LARGE_ARRAY_SIZE } from './utils.js';
 import fromPairs from '../fromPairs.js';
 import toPairs from '../toPairs.js';
 
-describe('fromPairs', function() {
-  it('should accept a two dimensional array', function() {
-    var array = [['a', 1], ['b', 2]],
-        object = { 'a': 1, 'b': 2 },
-        actual = fromPairs(array);
+describe('fromPairs', () => {
+  it('should accept a two dimensional array', () => {
+    let array = [['a', 1], ['b', 2]],
+      object = { 'a': 1, 'b': 2 },
+      actual = fromPairs(array);
 
     assert.deepStrictEqual(actual, object);
   });
 
-  it('should accept a falsey `array`', function() {
-    var expected = lodashStable.map(falsey, stubObject);
+  it('should accept a falsey `array`', () => {
+    const expected = lodashStable.map(falsey, stubObject);
 
-    var actual = lodashStable.map(falsey, function(array, index) {
+    const actual = lodashStable.map(falsey, (array, index) => {
       try {
         return index ? fromPairs(array) : fromPairs();
       } catch (e) {}
@@ -25,22 +25,20 @@ describe('fromPairs', function() {
     assert.deepStrictEqual(actual, expected);
   });
 
-  it('should not support deep paths', function() {
-    var actual = fromPairs([['a.b', 1]]);
+  it('should not support deep paths', () => {
+    const actual = fromPairs([['a.b', 1]]);
     assert.deepStrictEqual(actual, { 'a.b': 1 });
   });
 
-  it('should support consuming the return value of `_.toPairs`', function() {
-    var object = { 'a.b': 1 };
+  it('should support consuming the return value of `_.toPairs`', () => {
+    const object = { 'a.b': 1 };
     assert.deepStrictEqual(fromPairs(toPairs(object)), object);
   });
 
-  it('should work in a lazy sequence', function() {
-    var array = lodashStable.times(LARGE_ARRAY_SIZE, function(index) {
-      return ['key' + index, index];
-    });
+  it('should work in a lazy sequence', () => {
+    const array = lodashStable.times(LARGE_ARRAY_SIZE, (index) => [`key${index}`, index]);
 
-    var actual = _(array).fromPairs().map(square).filter(isEven).take().value();
+    const actual = _(array).fromPairs().map(square).filter(isEven).take().value();
 
     assert.deepEqual(actual, _.take(_.filter(_.map(fromPairs(array), square), isEven)));
   });
